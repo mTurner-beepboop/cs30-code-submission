@@ -1,13 +1,18 @@
 <!DOCTYPE html>
+{% load static %} 
 <html>
   <head>
     <title>DBVIew</title>
+	<link href="{% static '\css\style.css' %}" rel="stylesheet">
   </head>
 
   <body>
-    <h1>DBVIew - This is a placeholder.</h1>
-    <div>
-      <a href="/">Home</a><br/>
-    </div>
+    	<div class="header">
+		
+		
+			<img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
+		</div>
+		<div class="nav"> <a class="nav" href="{% url 'webapp:home' %}" > Home</a> > Database View</div>
+  <img src="{% static '/images/comeback.png' %}" alt="coming soon" width=100%>
   </body>
 </html>

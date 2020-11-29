@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+{% load static %} 
+	<head>
+		<title>webapp</title>
+		<link href="{% static '\css\style.css' %}" rel="stylesheet">
+		
+	</head>
+		<body>
+		<div class="header">
+		
+			<img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
+		</div>
+			<center>
+			<div class="form">
+			<div class="nav"> <a class="nav" href="{% url 'webapp:home' %}" > Home</a> > Login</div>
+			<form id="login_form" method="post" action=".">
+				{% csrf_token %}
+				<div>
+				<p class="formtext">Username:</p> <input class = "input" type="text" name="username" value="" size="50" />
+				<br />
+				<p class="formtext">Password:</p> <input class = "input" type="password" name="password" value="" size="50" />
+				<br />
+				</div>
+			<input class="loginb" type="submit" value="Login" />
+			</form>
+			<div class="alternativetext">Don't have an account? <a class="nav" href="{% url 'webapp:register' %}" > Register</a>
+			</div>
+			</center>
+	</body>
+</html>
