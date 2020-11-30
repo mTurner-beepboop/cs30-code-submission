@@ -1,16 +1,18 @@
 <!DOCTYPE html>
-{% load static %} 
+{% load static %}
 <html>
   <head>
     <title>Home</title>
 	<link href="{% static '\css\style.css' %}" rel="stylesheet">
   </head>
-  
+
 
   <body>
   		<div class="header">
-		
-			<img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
+
+			<a href="/"  >
+				<img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
+			</a>
 		</div>
 		<center>
 		<div class="form">
@@ -25,13 +27,13 @@
 	  <a class="button" href="/webapp/dbview/"><img src="{% static '/images/upload.png' %}" alt="upload data"></a><br/>
 	  <a class="button" href="/webapp/logout/"><img src="{% static '/images/logout.png' %}" alt="Logout"></a><br/>
 	  </div>
-	{% else %}	 
+	{% else %}
 	<div class="buttons">
       <a href="/webapp/register/"><img src="{% static '/images/register.png' %}" alt="register"></a><br/>
 	  <a href="/webapp/login/"><img src="{% static '/images/login.png' %}" alt="view login"></a>
 	</div>
 	{% endif %}
-	  
+
 
     </div>
 	</center>
