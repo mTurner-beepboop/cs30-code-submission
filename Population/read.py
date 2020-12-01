@@ -8,7 +8,7 @@ from tkinter import filedialog
 '''
 Still to be added:
 
-Check which rows if any result in duplicate objects in the mongodb
+For time being, the writing will overwrite all entries in the db, even if they are identical, this can be made more efficient
 Adapt this file to be a function for easy integration to api
 Remove file search as this will be passed by the dbms to the api
 Change user authentication to be passed in and used in the connect call
@@ -77,6 +77,7 @@ if db == -1:
     raise Exception("Authentication to the server failed, password or username was incorrect")
 
 collection = db['Carbon_info']
-id = collection.insert_many(list)#Push the list to the db cloud server ----- try not to do this too much, it's not made for duplicates yet -----
+for data in list:
+    id = collection.update_one({"Reference_Number":data["Reference_Number"]},{"$set":data}, upsert=True)#Push the list to the db cloud server overwriting the any duplicates already in the db
 
 print(id) #Mainly here for the moment to ensure the function has worked correctly
