@@ -52,7 +52,7 @@ def register(request):
         # Not a HTTP POST, so we render our form using two ModelForm instances.
         # These forms will be blank, ready for user input.
         user_form = UserForm()
-      
+
 
     # Render the template depending on the context.
     return render(request, 'webapp/register.html', context = {'user_form': user_form, 'registered': registered})
@@ -88,12 +88,6 @@ def user_login(request):
         # blank dictionary object...
         return render(request, 'webapp/login.html')
 
-        
-        
-
-@login_required
-def restricted(request):
-    return HttpResponse("Since you're logged in, you can see this text!")
 
 
 @login_required
@@ -102,4 +96,3 @@ def user_logout(request):
     logout(request)
     # Take the user back to the homepage.
     return HttpResponseRedirect("/webapp/")
-

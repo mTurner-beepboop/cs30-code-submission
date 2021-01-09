@@ -1,19 +1,11 @@
-<!DOCTYPE html>
+{% extends 'webapp/base.html' %}
 {% load static %}
-<html>
-  <head>
-    <title>DBVIew</title>
-	<link href="{% static '\css\style.css' %}" rel="stylesheet">
-  </head>
 
-  <body>
-    	<div class="header">
+{% block title_block %}
+    DBView
+{% endblock %}
 
-			<a href="{% url 'webapp:home' %}">
-				<img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
-			</a>
-		</div>
-		<div class="nav"> <a class="nav" href="{% url 'webapp:home' %}" > Home</a> > Database View</div>
+{% block body_block %}
+	<div class="nav"> <a class="nav" href="{% url 'webapp:home' %}" > Home</a> > Database View</div>
   <img src="{% static '/images/comeback.png' %}" alt="coming soon" width=100%>
-  </body>
-</html>
+{% endblock %}

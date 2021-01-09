@@ -1,19 +1,11 @@
-<!DOCTYPE html>
+{% extends 'webapp/base.html' %}
 {% load static %}
-<html>
-  <head>
-    <title>Home</title>
-	<link href="{% static '\css\style.css' %}" rel="stylesheet">
-  </head>
 
+{% block title_block %}
+    Home
+{% endblock %}
 
-  <body>
-  		<div class="header">
-
-			<a href="{% url 'webapp:home' %}">
-				<img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
-			</a>
-		</div>
+{% block body_block %}
 		<center>
 		<div class="form">
 		<div class="nav"> Home </div>
@@ -37,5 +29,4 @@
 
     </div>
 	</center>
-  </body>
-</html>
+{% endblock %}
