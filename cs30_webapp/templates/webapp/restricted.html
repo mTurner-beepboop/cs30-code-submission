@@ -8,14 +8,14 @@
   <body>
     <div class="header">
 
-			<a href="/"  >
+			<a href="{% url 'webapp:home' %}">
 				<img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
 			</a>
 		</div>
     <div>
-    <a href="/webapp/dbview/">DBView</a><br/>
-	  <a href="/webapp/register/">Register Here</a><br/>
-	  <a href="/webapp/login/">Login</a>
+    <a href="{% url 'webapp:dbview' %}">DBView</a><br/>
+	  <a href="{% url 'webapp:register' %}">Register Here</a><br/>
+	  <a href="{% url 'webapp:login' %}">Login</a>
 
     </div>
   </body>
