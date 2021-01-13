@@ -1,5 +1,4 @@
 [[source]]
-<<<<<<< Pipfile
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
@@ -14,6 +13,5 @@ pillow = "*"
 
 [dev-packages]
 
->>>>>>> Pipfile
 [requires]
 python_version = "3.9"
