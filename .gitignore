@@ -1,6 +1,4 @@
-<<<<<<< .gitignore
 *.xlsx
 *.lock
 db.sqlite3
 __pycache__/
->>>>>>> .gitignore
