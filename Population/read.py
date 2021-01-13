@@ -26,7 +26,7 @@ if (filename==""): #Check a file was selected, if not, stop
     raise Exception("No file was selected, suspending operation")
 
 try: #Try to read the file, will throw error if not right one ----- in final implementation, remove nrows parameter -----
-    excel_frame = pd.read_excel(filename,nrows=1,header=1,engine='xlrd',
+    excel_frame = pd.read_excel(filename,nrows=10,header=1,engine='xlrd',
               usecols=["Unique_identifier","Scope","Level_1","Level_2","Level_3","Level_4","Level_5","Emission_factor","Calculation Unit","Source","Preference","last update"],
               dtype={'Emission_factor':np.float64})
 except:
