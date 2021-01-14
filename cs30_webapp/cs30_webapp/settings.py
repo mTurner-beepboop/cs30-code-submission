@@ -25,7 +25,11 @@ MEDIA_DIR = os.path.join(BASE_DIR,'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-
+#CORS Informaation - For now just allows requests from the device running this 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = (
+    'http://localhost:8000',
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -49,9 +53,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'webapp',
+    'rest_framework',
+    'api',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -88,9 +96,15 @@ WSGI_APPLICATION = 'cs30_webapp.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default': { 
+        'ENGINE': 'djongo',
+        "CLIENT": {
+            "name": 'test', #Change to flatfile in final version
+            "host": "mongodb+srv://Mark_2386300:2386300@cluster0.rpq32.mongodb.net/test?retryWrites=true&w=majority",
+            "username": 'Mark_2386300',#For now this will be hardcoded with the admin username and password
+            "password": '2386300',
+            "authMechanism": "SCRAM-SHA-1",
+        }
     }
 }
 

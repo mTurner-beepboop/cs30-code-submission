@@ -10,6 +10,9 @@ pymongo = "*"
 dnspython = "*"
 django = "*"
 pillow = "*"
+djangorestframework = "*"
+djongo = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 
