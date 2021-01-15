@@ -9,26 +9,25 @@ from api.serializers import ApiSerializer
 
 @api_view(['GET','POST','DELETE'])
 def entry_list(request):
-    print(request)
     #GET list of entries, POST new entry, DELETE all entries
     if request.method == 'GET': #Retreive all entries or find entries by title
         entries = FlatfileEntry.objects.all()
         
-        title = request.GET.get('title', None)
-        if title is not None:
-            entries = entries.filter(title__icontains=title)
+        ref_num = request.GET.get('ref_num', None)
+        if ref_num is not None:
+            entries = entries.filter(ref_num__icontains=ref_num)
             
         api_serializer = ApiSerializer(entries, many=True)
         return JsonResponse(api_serializer.data, safe=False)
     elif request.method == 'POST': #Create and save new entry
         entry_data = request.data
-        
+
         api_serializer = ApiSerializer(data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
             return JsonResponse(api_serializer.data, status=status.HTTP_201_CREATED)
-        return JsonResponse(api_serializer.error, status=status.HTTP_400_BAD_REQUEST)
-    elif request.method == 'DELETE': #Delete all entries
+        return JsonResponse(api_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE': #Delete all entries - likely not needed in final implementation
         count = FlatfileEntry.objects.all().delete()
         return JsonResponse({'message': '{} entires were deleted'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
     
@@ -46,7 +45,7 @@ def entry_detail(request, pk):
         api_serializer = ApiSerializer(entry)
         return JsonResponse(api_serializer.data)
     elif request.method == 'PUT': #Update an existing entry
-        entry_data = request.data
+        entry_data = JSONParser.parse(request.data)
         api_serializer = ApiSerializer(entry, data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
