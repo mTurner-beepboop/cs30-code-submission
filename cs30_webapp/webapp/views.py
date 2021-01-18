@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from django.template import RequestContext
 from django.shortcuts import redirect
 from django.urls import reverse
+import requests
 
 
 
@@ -15,9 +16,12 @@ def home(request):
     return render(request,'webapp/home.html')
 
 
-
+#This view serves 3 pages, view, edit and upload, these might need to be separate. edit will require a push request, upload will probably need to use the population script (are we completely deleting data in the database or updating?)
 def dbview(request):
-    return render(request,'webapp/dbview.html')
+    response = requests.get('http://localhost:8000/api/carbon') #The url here will need to be made more general so it doesn't need to be changed based on host, I don't remember how to do that though
+    entries = response.json() #This line puts the response into a python dictionary
+
+    return render(request,'webapp/dbview.html', {'entries': entries})
 
 
 def register(request):

@@ -13,6 +13,7 @@ pillow = "*"
 djangorestframework = "*"
 djongo = "*"
 django-cors-headers = "*"
+requests = "*"
 
 [dev-packages]
 
