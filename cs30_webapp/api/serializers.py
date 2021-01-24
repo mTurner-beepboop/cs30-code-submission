@@ -41,3 +41,7 @@ class ApiSerializer(serializers.ModelSerializer):
         
         
         return entry
+        
+    #TODO: write update method
+    def update(self, valid_data):
+        return

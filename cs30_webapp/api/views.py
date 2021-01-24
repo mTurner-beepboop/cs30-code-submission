@@ -45,7 +45,7 @@ def entry_detail(request, pk):
         api_serializer = ApiSerializer(entry)
         return JsonResponse(api_serializer.data)
     elif request.method == 'PUT': #Update an existing entry
-        entry_data = JSONParser.parse(request.data)
+        entry_data = request.data
         api_serializer = ApiSerializer(entry, data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
