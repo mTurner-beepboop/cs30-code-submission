@@ -11,6 +11,7 @@ dnspython = "*"
 django = "*"
 pillow = "*"
 gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 
