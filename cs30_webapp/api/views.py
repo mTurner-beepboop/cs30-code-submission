@@ -78,20 +78,23 @@ def categories(request):
             if level in path.keys():
                 i+=1
                 if level == 'scope':
-                    nav_data.filter(scope__icontains=path[level])
+                    nav_data = nav_data.filter(scope__exact=path[level])
                 elif level == 'level1':
-                    nav_data.filter(level1__icontains=path[level])
+                    nav_data = nav_data.filter(level1__exact=path[level])
                 elif level == 'level2':
-                    nav_data.filter(level2__icontains=path[level])
+                    nav_data = nav_data.filter(level2__exact=path[level])
                 elif level == 'level3':
-                    nav_data.filter(level3__icontains=path[level])
+                    nav_data = nav_data.filter(level3__exact=path[level])
                 elif level == 'level4':
-                    nav_data.filter(level4__icontains=path[level])
+                    nav_data = nav_data.filter(level4__exact=path[level])
                 elif level == 'level5':
-                    nav_data.filter(level5__icontains=path[level])
+                    nav_data = nav_data.filter(level5__exact=path[level])
                 continue
             break
         #nav_data should now contain only those entries down the path specified in the request
         #Now find all unique levels below
         level_vals = list(nav_data.values(levels[i]).distinct())
-        return JsonResponse({'message':level_vals})
+        level_names = []
+        for dict in level_vals:
+            level_names.append(dict[levels[i]])
+        return JsonResponse({'message':level_names})

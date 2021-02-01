@@ -29,6 +29,7 @@ Since many requests may use the same form of JSON request/response, they will be
 'message':<string>
 }
 
+---INTERNAL---
 To request the full contents of the database:
 Send GET request to <host>/api/carbon
 The API will return a stream of JSON documents of the flatfile entry form.
@@ -52,3 +53,14 @@ The API will either return the same request back to signify success, or a HTTP r
 To delete single entry from database:
 Send DELETE request to <host>/api/carbon/<ref_num>
 The API will return if row was deleted in message form, along with HTTP response 204 if it was
+
+
+
+---ETERNAL---
+To find available scopes and levels:
+For scopes, send a GET request to <host>/api/carbon/scope
+The API will return a list of scopes in message form, eg {"message":["Scope 1", "Scope 2"]}
+
+To find levels, send post request to the same address with information down to the level you are looking for
+eg: {"scope":"Scope 3","level1":"Food", "level2":"Meat"} would return a list of available level 3 categories for that path
+The API will again return this as a list of results in message form
