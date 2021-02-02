@@ -97,4 +97,12 @@ def categories(request):
         level_names = []
         for dict in level_vals:
             level_names.append(dict[levels[i]])
-        return JsonResponse({'message':level_names})
+            
+        if len(nav_data) > 1:
+            return JsonResponse({'subcategories':level_names, 'id':0})
+        else:
+            #find id of only associated entry 
+            nav_id = list(nav_data.values('id'))[0]['id']
+            entry = FlatfileEntry.objects.get(navigation_info=nav_id)
+            id = entry.ref_num
+            return JsonResponse({'subcategories':level_names, 'id':id})

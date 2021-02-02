@@ -1,5 +1,5 @@
 This is the instruction file for the API of the carbon emmissions web app, it should be updated 
-throughout development to ensure it reamins up to date with all requests the are available for use.
+throughout development to ensure it remains up to date with all requests the are available for use.
 
 
 Since many requests may use the same form of JSON request/response, they will be defined here for simplicity.
@@ -27,6 +27,12 @@ Since many requests may use the same form of JSON request/response, they will be
 - Message form
 {
 'message':<string>
+}
+
+- Category form
+{
+'subcategories':<list of strings>
+'id':<integer>
 }
 
 ---INTERNAL---
@@ -59,8 +65,10 @@ The API will return if row was deleted in message form, along with HTTP response
 ---ETERNAL---
 To find available scopes and levels:
 For scopes, send a GET request to <host>/api/carbon/scope
-The API will return a list of scopes in message form, eg {"message":["Scope 1", "Scope 2"]}
+The API will return a list of scopes in category form, eg {"subcategories":["Scope 1", "Scope 2"], "id":0}
 
 To find levels, send post request to the same address with information down to the level you are looking for
 eg: {"scope":"Scope 3","level1":"Food", "level2":"Meat"} would return a list of available level 3 categories for that path
-The API will again return this as a list of results in message form
+The API will again return this as a list of results in category form, if there is only one entry matching the given path, the subcategories field will return empty and the id field will contain the id of the item
+Note: for now null fields are denoted with "x" in the database, this will be updated later in development, but currently, a sample return for a single entry would be {"subcategories":["x"],"id":5829}
+The API will als return an id number if no other entries exist at any level, this is simply because data is missing - eg sending a request of Scope 3, Food, Meat, Game, would give a return of {"subcategoreis":["birds"],"id":5829}
