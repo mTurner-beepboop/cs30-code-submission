@@ -72,3 +72,10 @@ eg: {"scope":"Scope 3","level1":"Food", "level2":"Meat"} would return a list of 
 The API will again return this as a list of results in category form, if there is only one entry matching the given path, the subcategories field will return empty and the id field will contain the id of the item
 Note: for now null fields are denoted with "x" in the database, this will be updated later in development, but currently, a sample return for a single entry would be {"subcategories":["x"],"id":5829}
 The API will als return an id number if no other entries exist at any level, this is simply because data is missing - eg sending a request of Scope 3, Food, Meat, Game, would give a return of {"subcategoreis":["birds"],"id":5829}
+If the path provided does not exist, the API will return {"message":"Path not found"}
+
+
+To calculate a given amount of an item:
+Send POST request to <host>/api/carbon/info of the form {"id":<integer>, "amount":<integer>}
+The API will return a message of the form {"result":<float>, "calc_unit":<string>, "source":<string>}
+Note: if the API cannot find a matching id, will return entry not found message

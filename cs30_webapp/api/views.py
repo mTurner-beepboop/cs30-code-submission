@@ -98,11 +98,31 @@ def categories(request):
         for dict in level_vals:
             level_names.append(dict[levels[i]])
             
-        if len(nav_data) > 1:
+        if len(nav_data) > 1: #If there's more than one available path, no one id associated so leave as 0
             return JsonResponse({'subcategories':level_names, 'id':0})
-        else:
-            #find id of only associated entry 
+        elif len(nav_data) == 1: #If there's one available path, find id associated and return it
             nav_id = list(nav_data.values('id'))[0]['id']
             entry = FlatfileEntry.objects.get(navigation_info=nav_id)
             id = entry.ref_num
             return JsonResponse({'subcategories':level_names, 'id':id})
+        else: #If there are no paths, an error occurred in API call, return error message
+            return JsonResponse({'message': 'Path not found'})
+            
+@api_view(['POST'])
+def item_calc(request):
+    if request.method == 'POST':
+        #Find entry of given id
+        try:
+            entry = FlatfileEntry.objects.filter(pk=request.data['id'])[0]
+        except:
+            return JsonResponse({"message":"Entry not found"})
+        
+        #Collect the right information
+        source = entry.other_info.source
+        unit = entry.calculation_info.cu
+        factor = entry.calculation_info.ef
+        
+        #Calculate the total
+        total = factor * request.data['amount']
+        
+        return JsonResponse({"total":total, "calc_unit":unit, "source":source})
