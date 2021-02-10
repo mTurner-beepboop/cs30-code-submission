@@ -78,20 +78,51 @@ def categories(request):
             if level in path.keys():
                 i+=1
                 if level == 'scope':
-                    nav_data.filter(scope__icontains=path[level])
+                    nav_data = nav_data.filter(scope__exact=path[level])
                 elif level == 'level1':
-                    nav_data.filter(level1__icontains=path[level])
+                    nav_data = nav_data.filter(level1__exact=path[level])
                 elif level == 'level2':
-                    nav_data.filter(level2__icontains=path[level])
+                    nav_data = nav_data.filter(level2__exact=path[level])
                 elif level == 'level3':
-                    nav_data.filter(level3__icontains=path[level])
+                    nav_data = nav_data.filter(level3__exact=path[level])
                 elif level == 'level4':
-                    nav_data.filter(level4__icontains=path[level])
+                    nav_data = nav_data.filter(level4__exact=path[level])
                 elif level == 'level5':
-                    nav_data.filter(level5__icontains=path[level])
+                    nav_data = nav_data.filter(level5__exact=path[level])
                 continue
             break
         #nav_data should now contain only those entries down the path specified in the request
         #Now find all unique levels below
         level_vals = list(nav_data.values(levels[i]).distinct())
-        return JsonResponse({'message':level_vals})
+        level_names = []
+        for dict in level_vals:
+            level_names.append(dict[levels[i]])
+            
+        if len(nav_data) > 1: #If there's more than one available path, no one id associated so leave as 0
+            return JsonResponse({'subcategories':level_names, 'id':0})
+        elif len(nav_data) == 1: #If there's one available path, find id associated and return it
+            nav_id = list(nav_data.values('id'))[0]['id']
+            entry = FlatfileEntry.objects.get(navigation_info=nav_id)
+            id = entry.ref_num
+            return JsonResponse({'subcategories':level_names, 'id':id})
+        else: #If there are no paths, an error occurred in API call, return error message
+            return JsonResponse({'message': 'Path not found'})
+            
+@api_view(['POST'])
+def item_calc(request):
+    if request.method == 'POST':
+        #Find entry of given id
+        try:
+            entry = FlatfileEntry.objects.filter(pk=request.data['id'])[0]
+        except:
+            return JsonResponse({"message":"Entry not found"})
+        
+        #Collect the right information
+        source = entry.other_info.source
+        unit = entry.calculation_info.cu
+        factor = entry.calculation_info.ef
+        
+        #Calculate the total
+        total = factor * request.data['amount']
+        
+        return JsonResponse({"total":total, "calc_unit":unit, "source":source})

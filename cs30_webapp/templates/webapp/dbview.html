@@ -7,5 +7,14 @@
 
 {% block body_block %}
 	<div class="nav"> <a class="nav" href="{% url 'webapp:home' %}" > Home</a> > Database View</div>
-  <img src="{% static '/images/comeback.png' %}" alt="coming soon" width=100%>
+	<img src="{% static '/images/comeback.png' %}" alt="coming soon" width=100%>
+	
+	<!-- Below is the code that displays the stuff from the server, this is what needs changed -->
+	<br>
+	<h1>Test</h1>
+	<ul>
+	{% for entry in entries %}
+		<li>{{ entry.ref_num }}</li> <!-- The keywords you can use for entries are 'ref_num', 'navigation_info.scope', '.level1', etc, 'calculation_info.cu', '.ef', and 'other_info.source', '.preference', etc -->
+	{% endfor %}
+	</ul>
 {% endblock %}
