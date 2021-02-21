@@ -10,19 +10,20 @@
 		<div class="form">
 			<div class="nav">
         <!--Needs changed to proper breadcrumb.(ie in base) -->
-        <a class="nav" href="{% url 'webapp:home' %}" > Home</a> > Register
+        <a class="nav" href="{% url 'webapp:home' %}">Home</a>
+        > Register
       </div>
 
-
-			<form id="user_form" method="post" action="/webapp/register/"
-				enctype="multipart/form-data">
+			<form id="user_form" method="post" action="/webapp/register/" enctype="multipart/form-data">
 
 			{% csrf_token %}
 			{{ user_form.as_p }}
 			<!-- Provide a button to click to submit the form. -->
-			<input class="loginb" type="submit" name="submit" value="Register" />
+			<button class="loginb" type="submit"> Register </button>
 			</form>
-			<div class="alternativetext">Already have an account? <a class="nav" href="{% url 'webapp:login' %}" > Login</a>
+			<div class="alternativetext">
+        Already have an account? <a class="nav" href="{% url 'webapp:login' %}">Login</a>
+      </div>
 
 		</div>
 		</center>

@@ -1,9 +1,19 @@
+
+body{
+	font-family: Calibri;
+}
+
+input{
+	background-color:#E0E0E0;
+	border: 0px;
+	padding: 0.5em;
+}
+
 .form{
 	text-align: center;
-	width: 90%; 
+	width: 90%;
 	height: 100vh;
 	background-color: #E5EEE9;
-	font-family: Calibri;
 	}
 
 .header{
@@ -41,37 +51,19 @@
 	font-size:36px;
 	font-weight:900;
 	color:#017A5B;
-	
+
 }
 
 .bodytext{
 	width:60%;
 	background-color:#FFFFFF;
-	
 }
-
-
-
-input{
-	background-color:#E0E0E0;
-	border: 0px;
-	padding: 0.5em;
-	
-}
-
 
 .alternativetext{
 	color:#017A5B ;
-	
 }
-
 
 .buttons{
 	height:10%;
 	content-align:center;
 }
-
-
-
-
-

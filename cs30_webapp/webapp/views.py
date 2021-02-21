@@ -26,7 +26,6 @@ def dbview(request):
 
 
 def register(request):
-    registered = False
     context = RequestContext(request)
 
     # If it's a HTTP POST, we're interested in processing form data.
@@ -48,7 +47,7 @@ def register(request):
 
             # Update our variable to indicate that the template
             # registration was successful.
-            messages.success(request,'Thank you for registering!')
+            messages.success(request,'Thank you for registering! A staff member will confirm your account.')
             return render(request, 'webapp/home.html')
         else:
             # Invalid form or forms - mistakes or something else?
@@ -61,7 +60,7 @@ def register(request):
 
 
     # Render the template depending on the context.
-    return render(request, 'webapp/register.html', context = {'user_form': user_form, 'registered': registered})
+    return render(request, 'webapp/register.html', context = {'user_form': user_form})
 
 def user_login(request):
     context = RequestContext(request)
@@ -89,7 +88,6 @@ def user_login(request):
 
             #This print displays their username and password on the console, enable for debug only.
             #print(f"Invalid login details: {username}, {password}")
-
             messages.error(request,'Username or password was incorrect, please try again.')
             return render(request, 'webapp/login.html')
 
