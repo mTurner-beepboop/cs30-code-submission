@@ -16,6 +16,11 @@
 				<br />
 				<p class="formtext">Password:</p> <input class = "input" type="password" name="password" value="" size="50" />
 				<br />
+        <br />
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+        <br />
 				</div>
 			<input class="loginb" type="submit" value="Login" />
 			</form>

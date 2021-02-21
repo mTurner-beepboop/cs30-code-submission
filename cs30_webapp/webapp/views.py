@@ -8,6 +8,7 @@ from django.contrib.auth import logout
 from django.template import RequestContext
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
 import requests
 
 
@@ -47,7 +48,8 @@ def register(request):
 
             # Update our variable to indicate that the template
             # registration was successful.
-            registered = True
+            messages.success(request,'Thank you for registering!')
+            return render(request, 'webapp/home.html')
         else:
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -60,6 +62,7 @@ def register(request):
 
     # Render the template depending on the context.
     return render(request, 'webapp/register.html', context = {'user_form': user_form, 'registered': registered})
+
 def user_login(request):
     context = RequestContext(request)
 
@@ -79,11 +82,16 @@ def user_login(request):
                 return redirect(reverse('webapp:home'))
             else:
                 # An inactive account was used - no logging in!
-                return HttpResponse("Your webapp account is disabled.")
+                messages.error(request,'Your account has not been activated, please contact a staff member.')
+                return render(request, 'webapp/login.html')
         else:
             # Bad login details were provided. So we can't log the user in.
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+
+            #This print displays their username and password on the console, enable for debug only.
+            #print(f"Invalid login details: {username}, {password}")
+
+            messages.error(request,'Username or password was incorrect, please try again.')
+            return render(request, 'webapp/login.html')
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.
