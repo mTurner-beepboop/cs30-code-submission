@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-  <meta charset="utf-8">
+    <head>
+      <meta charset="utf-8">
+      <title>
+        CS30 - {% block title_block %} Test Title {% endblock %}
+      </title>
+      <link href="{% static '\css\style.css' %}" rel="stylesheet">
+    </head>
+    <body>
+      <div class="header">
 
-  <title>
-    CS30 - {% block title_block %} Title {% endblock %}
-  </title>
 
-  <link href="{% static '\css\style.css' %}" rel="stylesheet">
-
-</head>
-
-<div class="header">
-  <a href="{% url 'webapp:home' %}">
-    <img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
-  </a>
-</div>
-
-<body>
-  {% block body_block %}
-  {% endblock %}
-</body>
+  			<a href="{% url 'webapp:home' %}">
+  				<img src="{% static '/images/logo.png' %}" max-width="20%" alt="SWC Logo">
+  			</a>
+  		</div>
+      {% block body_block %}
+      {% endblock %}
+    </body>
 </html>

@@ -1,0 +1,65 @@
+{% extends 'webapp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+    DBView
+{% endblock %}
+
+{% block body_block %}	
+	<br>
+	<h1>Test</h1>
+	<ul>
+	{% for entry in entries %}
+		<li>{{ entry.ref_num }}</li> 
+	{% endfor %}
+	</ul>
+	
+	<div class="nav"> <a class="nav" href="{% url 'webapp:home' %}" > Home</a> > Update View</div>
+	<div style='display: grid; 
+            text-align: center;
+            background-color: #E5EEE9'>
+		
+
+
+	<table>
+    <tr>
+	
+      <th>Reference</th>
+      <th>Scope</th>
+	  <th>Level 1</th>
+	  <th>Level 2</th>
+	  <th>Level 3</th>
+	  <th>Level 4</th>
+	  <th>Level 5</th>
+	  <th>EF</th>
+	  <th>CU</th>
+	  <th>Last updated</th>
+	  <th>Preference</th>
+	  <th>Source</th>
+	 
+    </tr>
+
+    {% for entry in entries %}
+	
+		{% if entry.ref_num == 2108 %}
+		  <tr>
+			<td>{{ entry.ref_num  }}</td>
+			<td>{{ entry.navigation_info.scope  }}</td>
+			<td>{{ entry.navigation_info.level1  }}</td>
+			<td>{{ entry.navigation_info.level2  }}</td>
+			<td>{{ entry.navigation_info.level3  }}</td>
+			<td>{{ entry.navigation_info.level4  }}</td>
+			<td>{{ entry.navigation_info.level5  }}</td>
+			<td>{{ entry.calculation_info.ef  }}</td>
+			<td>{{ entry.calculation_info.cu  }}</td>
+			<td>{{ entry.other_info.last_update  }}</td>
+			<td>{{ entry.other_info.preference }}</td>
+			<td>{{ entry.other_info.source  }}</td>
+			
+		  </tr>
+		  {% else %}
+		  {% endif %}
+    {% endfor %}
+  </table>
+  </div>
+{% endblock %}
