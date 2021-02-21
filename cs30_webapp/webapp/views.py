@@ -8,21 +8,22 @@ from django.contrib.auth import logout
 from django.template import RequestContext
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
 import requests
 
 
 
 def home(request):
     return render(request,'webapp/home.html')
-    
+
 
 def edit(request):
     return render(request,'webapp/edit.html')
-    
+
 def add(request):
     return render(request,'webapp/add.html')
 
-    
+
 
 #This view serves 3 pages, view, edit and upload, these might need to be separate. edit will require a push request, upload will probably need to use the population script (are we completely deleting data in the database or updating?)
 def dbview(request):
@@ -33,7 +34,6 @@ def dbview(request):
 
 
 def register(request):
-    registered = False
     context = RequestContext(request)
 
     # If it's a HTTP POST, we're interested in processing form data.
@@ -53,9 +53,8 @@ def register(request):
             user.save()
 
 
-            # Update our variable to indicate that the template
-            # registration was successful.
-            registered = True
+            messages.success(request,'Thank you for registering! Please wait for a staff member to activate your account.')
+            return render(request, 'webapp/home.html')
         else:
             # Invalid form or forms - mistakes or something else?
             # Print problems to the terminal.
@@ -67,7 +66,8 @@ def register(request):
 
 
     # Render the template depending on the context.
-    return render(request, 'webapp/register.html', context = {'user_form': user_form, 'registered': registered})
+    return render(request, 'webapp/register.html', context = {'user_form': user_form})
+
 def user_login(request):
     context = RequestContext(request)
 
@@ -80,18 +80,22 @@ def user_login(request):
 
         if user:
             # Is the account active? It could have been disabled.
-            if user.is_active:
+            if user.is_staff:
                 # If the account is valid and active, we can log the user in.
                 # We'll send the user back to the homepage.
                 login(request, user)
                 return redirect(reverse('webapp:home'))
             else:
                 # An inactive account was used - no logging in!
-                return HttpResponse("Your webapp account is disabled.")
+                messages.error(request,'Your account has not been activated, please contact a staff member.')
+                return render(request, 'webapp/login.html')
         else:
             # Bad login details were provided. So we can't log the user in.
-            print(f"Invalid login details: {username}, {password}")
-            return HttpResponse("Invalid login details supplied.")
+            #This print displays their username and password on the console, enable for debug only.
+            #print(f"Invalid login details: {username}, {password}")
+
+            messages.error(request,'Username or password was incorrect, please try again.')
+            return render(request, 'webapp/login.html')
 
     # The request is not a HTTP POST, so display the login form.
     # This scenario would most likely be a HTTP GET.

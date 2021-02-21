@@ -2,31 +2,38 @@
 {% load static %}
 
 {% block title_block %}
-    Home
+Home
 {% endblock %}
 
 {% block body_block %}
-		<center>
-		<div class="form">
-		<div class="nav"> Home </div>
-    <div>
-	{% if user.is_authenticated %}
+<center>
+  <div class="form">
+    <div class="nav"> Home </div>
 
-	  <p class="welcome">Hello, {{user.username}} </p>
-	  <div class="buttons">
-      <a class="button" href="{% url 'webapp:dbview' %}"><img src="{% static '/images/viewdb.png' %}" alt="view database"></a><br/>
-	  <a class="button" href="{% url 'webapp:edit' %}"><img src="{% static '/images/edit.png' %}" alt="edit database"></a><br/>
-	  <a class="button" href="{% url 'webapp:add' %}"><img src="{% static '/images/upload.png' %}" alt="upload data"></a><br/>
-	  <a class="button" href="{% url 'webapp:logout' %}"><img src="{% static '/images/logout.png' %}" alt="Logout"></a><br/>
-	  </div>
-	{% else %}
-	<div class="buttons">
-      <a href="{% url 'webapp:register' %}"><img src="{% static '/images/register.png' %}" alt="register"></a><br/>
-	  <a href="{% url 'webapp:login' %}"><img src="{% static '/images/login.png' %}" alt="view login"></a>
-	</div>
-	{% endif %}
+      {% for message in messages %}
+      {{ message }}
+      {% endfor %}
+      {% if user.is_authenticated %}
+
+      <p class="welcome">Hello, {{user.username}} </p>
+
+      <div class="buttons">
+        <a class="button" href="{% url 'webapp:dbview' %}"><img src="{% static '/images/viewdb.png' %}" alt="view database"></a><br/>
+        <a class="button" href="{% url 'webapp:edit' %}"><img src="{% static '/images/edit.png' %}" alt="edit database"></a><br/>
+        <a class="button" href="{% url 'webapp:add' %}"><img src="{% static '/images/upload.png' %}" alt="upload data"></a><br/>
+        <a class="button" href="{% url 'webapp:logout' %}"><img src="{% static '/images/logout.png' %}" alt="Logout"></a><br/>
+      </div>
+
+      {% else %}
+
+      <div class="buttons">
+        <a class="button" href="{% url 'webapp:register' %}"><img src="{% static '/images/register.png' %}" alt="register"></a><br/>
+        <a class="button" href="{% url 'webapp:login' %}"><img src="{% static '/images/login.png' %}" alt="view login"></a>
+      </div>
+
+      {% endif %}
 
 
     </div>
-	</center>
-{% endblock %}
+  </center>
+  {% endblock %}
