@@ -1,7 +1,3 @@
-.site-colour{
-	background-color: #017a5b;
-}
-
 body{
 	min-height: 100vh;
 	padding-bottom: 50px;
@@ -10,4 +6,22 @@ body{
 
 html{
 	min-height: 100%;
+}
+
+.site-colour{
+	background-color: #017a5b;
+}
+
+.site-colour-light{
+	background-color:#b4e3d7;
+}
+
+.site-text-dark{
+	color:#017a5b;
+}
+
+.button-menu-height{
+	height:75px;
+	font-size:32px;
+	color:#006d5f;
 }

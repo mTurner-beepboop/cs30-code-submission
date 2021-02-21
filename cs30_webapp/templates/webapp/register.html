@@ -6,27 +6,45 @@ Sign Up
 {% endblock %}
 
 {% block body_block %}
-<center>
-  <div class="form">
-    <div class="nav">
-      <!--Needs changed to proper breadcrumb.(ie in base) -->
-      <a class="nav" href="{% url 'webapp:home' %}"> Home </a>
-      > Register
+<div class="container">
+  <div>
+    <!--Needs changed to proper breadcrumb.(ie in base) -->
+    <a href="{% url 'webapp:home' %}"> Home </a>
+    > Register
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-4 site-colour-light pt-5 px-5 pb-2 rounded site-text-dark">
+
+      <form id="user_form" method="post" action="/webapp/register/" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        {% for field in user_form %}
+
+        <label for="{{ field.label }}" class="form-label">{{ field.label }}: </label>
+        <input type="password" id="{{ field.label }}" class="form-control" aria-describedby="{{ field.label }}HelpBlock">
+
+        {% if field.label == 'Password' %}
+        <div id="{{ field.label }}HelpBlock" class="form-text pb-2">
+          <!--This space is for help comments eg "Usernames must contain uppercase letter" etc -->
+        </div>
+        {% endif %}
+
+        {% endfor %}
+        <!-- Provide a button to click to submit the form. -->
+        <button class="btn btn-primary my-3" type="submit"> Register </button>
+
+      </form>
+
+
+      <div>
+        <p>
+          Already have an account? <a href="{% url 'webapp:login' %}"> Login </a>
+        </p>
+      </div>
+
     </div>
+  </div>
 
-    <form id="user_form" method="post" action="/webapp/register/" enctype="multipart/form-data">
-
-      {% csrf_token %}
-      {{ user_form.as_p }}
-      <!-- Provide a button to click to submit the form. -->
-      <button class="loginb" type="submit"> Register </button>
-
-    </form>
-
-    <div class="alternativetext">
-      Already have an account?
-      <a class="nav" href="{% url 'webapp:login' %}"> Login </a>
-    </div>
-    
-  </center>
-  {% endblock %}
+</div>
+{% endblock %}

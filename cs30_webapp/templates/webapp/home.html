@@ -9,7 +9,7 @@ Home
 
   <div class="container">
     <div class="row justify-content-center">
-      <div class="col-7">
+      <div class="col-6">
 
           {% for message in messages %}
             {{ message }}
@@ -19,18 +19,17 @@ Home
           {% if user.is_authenticated %}
             <p> Hello, {{user.username}} </p>
 
-            <div class="row justify-content-center">
-              <a class="col m-2" href="{% url 'webapp:dbview' %}"><img src="{% static '/images/viewdb.png' %}" alt="view database"></a><br/>
-              <a class="col m-2" href="{% url 'webapp:edit' %}"><img src="{% static '/images/edit.png' %}" alt="edit database"></a><br/>
-              <a class="col m-2" href="{% url 'webapp:add' %}"><img src="{% static '/images/upload.png' %}" alt="upload data"></a><br/>
-              <a class="col m-2" href="{% url 'webapp:logout' %}"><img src="{% static '/images/logout.png' %}" alt="Logout"></a><br/>
+            <div class="d-grid gap-2 col-12 mx-auto"">
+              <a class="btn site-colour-light button-menu-height" href="{% url 'webapp:dbview' %}">Viewdb</a>
+              <a class="btn site-colour-light button-menu-height" href="{% url 'webapp:edit' %}">Edit</a>
+              <a class="btn site-colour-light button-menu-height" href="{% url 'webapp:add' %}">Upload</a>
+              <a class="btn site-colour-light button-menu-height" href="{% url 'webapp:logout' %}">Logout</a>
             </div>
 
             {% else %}
-
-            <div class="row justify-content-center">
-              <a class="col m-2" href="{% url 'webapp:register' %}"><img src="{% static '/images/register.png' %}" alt="register"></a><br/>
-              <a class="col m-2" href="{% url 'webapp:login' %}"><img src="{% static '/images/login.png' %}" alt="view login"></a>
+            <div class="d-grid gap-2 col-12 mx-auto">
+              <a class="btn site-colour-light button-menu-height" href="{% url 'webapp:register' %}">Register</a>
+              <a class="btn site-colour-light button-menu-height" href="{% url 'webapp:login' %}">Login</a>
             </div>
 
           {% endif %}
