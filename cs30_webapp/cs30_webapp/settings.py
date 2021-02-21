@@ -25,7 +25,7 @@ MEDIA_DIR = os.path.join(BASE_DIR,'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-#CORS Informaation - For now just allows requests from the device running this 
+#CORS Informaation - For now just allows requests from the device running this
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'cs30_webapp.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': { 
+    'default': {
         'ENGINE': 'djongo',
         "CLIENT": {
             "name": 'test', #Change to flatfile in final version
