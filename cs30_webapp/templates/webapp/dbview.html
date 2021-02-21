@@ -2,52 +2,52 @@
 {% load static %}
 
 {% block title_block %}
-    DBView
+DBView
 {% endblock %}
 
 {% block body_block %}
-	<div class="nav"> <a class="nav" href="{% url 'webapp:home' %}" > Home</a> > Database View</div>
-	
-	
-	<div style='display: grid; 
-            text-align: center;
-            background-color: #E5EEE9'
-    >
-	<table>
+<div class="nav">
+  <a class="nav" href="{% url 'webapp:home' %}"> Home </a>
+  > Database View
+</div>
+
+
+<div style='display: grid; text-align: center; background-color: #E5EEE9'>
+  <table>
     <tr>
-	
+
       <th>Reference</th>
       <th>Scope</th>
-	  <th>Level 1</th>
-	  <th>Level 2</th>
-	  <th>Level 3</th>
-	  <th>Level 4</th>
-	  <th>Level 5</th>
-	  <th>EF</th>
-	  <th>CU</th>
-	  <th>Last updated</th>
-	  <th>Preference</th>
-	  <th>Source</th>
-	 
+      <th>Level 1</th>
+      <th>Level 2</th>
+      <th>Level 3</th>
+      <th>Level 4</th>
+      <th>Level 5</th>
+      <th>EF</th>
+      <th>CU</th>
+      <th>Last updated</th>
+      <th>Preference</th>
+      <th>Source</th>
+
     </tr>
 
     {% for entry in entries %}
-      <tr>
-        <td>{{ entry.ref_num  }}</td>
-        <td>{{ entry.navigation_info.scope  }}</td>
-		<td>{{ entry.navigation_info.level1  }}</td>
-		<td>{{ entry.navigation_info.level2  }}</td>
-		<td>{{ entry.navigation_info.level3  }}</td>
-		<td>{{ entry.navigation_info.level4  }}</td>
-		<td>{{ entry.navigation_info.level5  }}</td>
-		<td>{{ entry.calculation_info.ef  }}</td>
-		<td>{{ entry.calculation_info.cu  }}</td>
-		<td>{{ entry.other_info.last_update  }}</td>
-		<td>{{ entry.other_info.preference }}</td>
-		<td>{{ entry.other_info.source  }}</td>
-		
-      </tr>
+    <tr>
+      <td>{{ entry.ref_num  }}</td>
+      <td>{{ entry.navigation_info.scope  }}</td>
+      <td>{{ entry.navigation_info.level1  }}</td>
+      <td>{{ entry.navigation_info.level2  }}</td>
+      <td>{{ entry.navigation_info.level3  }}</td>
+      <td>{{ entry.navigation_info.level4  }}</td>
+      <td>{{ entry.navigation_info.level5  }}</td>
+      <td>{{ entry.calculation_info.ef  }}</td>
+      <td>{{ entry.calculation_info.cu  }}</td>
+      <td>{{ entry.other_info.last_update  }}</td>
+      <td>{{ entry.other_info.preference }}</td>
+      <td>{{ entry.other_info.source  }}</td>
+
+    </tr>
     {% endfor %}
   </table>
-  </div>
+</div>
 {% endblock %}
