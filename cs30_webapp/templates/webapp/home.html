@@ -22,8 +22,7 @@ Home
       {% if user.is_authenticated %}
 
       <div class="d-grid gap-2 col-12 mx-auto"">
-              <a class=" btn button-menu" href="{% url 'webapp:dbview' %}">Viewdb</a>
-        <a class="btn button-menu" href="{% url 'webapp:edit' %}">Edit</a>
+        <a class="btn button-menu" href="{% url 'webapp:dbview' %}">Viewdb</a>
         <a class="btn button-menu" href="{% url 'webapp:add' %}">Upload</a>
         <a class="btn button-menu" href="{% url 'webapp:logout' %}">Logout</a>
       </div>

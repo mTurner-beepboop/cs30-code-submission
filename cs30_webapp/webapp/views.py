@@ -11,25 +11,33 @@ from django.urls import reverse
 from django.contrib import messages
 import requests
 
-
+@login_required
 def home(request):
     return render(request, 'webapp/home.html')
 
+@login_required
+def edit(request, refnum):
+    entry = requests.get('http://localhost:8000/api/carbon/' + refnum).json()
+    return render(request, 'webapp/edit.html', {'entry':entry})
 
-def edit(request):
-    return render(request, 'webapp/edit.html')
-
-
+@login_required
 def add(request):
     return render(request, 'webapp/add.html')
 
 
+@login_required
+def delete(request, refnum):
+    if request.method == 'POST':
+        requests.delete('http://localhost:8000/api/carbon/' + refnum)
+        return redirect(reverse('webapp:dbview'))
+    return render(request, 'webapp/dbview.html', {'entries': entries})
+
+
 # This view serves 3 pages, view, edit and upload, these might need to be separate. edit will require a push request, upload will probably need to use the population script (are we completely deleting data in the database or updating?)
+@login_required
 def dbview(request):
     # The url here will need to be made more general so it doesn't need to be changed based on host, I don't remember how to do that though
-    response = requests.get('http://localhost:8000/api/carbon')
-    entries = response.json()  # This line puts the response into a python dictionary
-
+    entries = requests.get('http://localhost:8000/api/carbon').json()
     return render(request, 'webapp/dbview.html', {'entries': entries})
 
 
@@ -87,16 +95,14 @@ def user_login(request):
                 return redirect(reverse('webapp:home'))
             else:
                 # An inactive account was used - no logging in!
-                messages.error(
-                    request, 'Your account has not been activated, please contact a staff member.')
+                messages.error(request, 'Your account has not been activated, please contact a staff member.')
                 return render(request, 'webapp/login.html')
         else:
             # Bad login details were provided. So we can't log the user in.
             # This print displays their username and password on the console, enable for debug only.
             #print(f"Invalid login details: {username}, {password}")
 
-            messages.error(
-                request, 'Username or password was incorrect, please try again.')
+            messages.error(request, 'Username or password was incorrect, please try again.')
             return render(request, 'webapp/login.html')
 
     # The request is not a HTTP POST, so display the login form.

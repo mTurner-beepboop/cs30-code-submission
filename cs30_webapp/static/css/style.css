@@ -32,7 +32,7 @@ html {
   color: white;
 }
 
-.btn:hover {
+.btn:hover.button-menu {
   color: white;
   background-color: #017a5b !important;
 }
