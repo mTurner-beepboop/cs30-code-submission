@@ -5,13 +5,12 @@
 Sign Up
 {% endblock %}
 
+{% block navblock %}
+  <li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Register</li>
+{% endblock %}
+
 {% block body_block %}
-<div class="container">
-  <div>
-    <!--Needs changed to proper breadcrumb.(ie in base) -->
-    <a href="{% url 'webapp:home' %}"> Home </a>
-    > Register
-  </div>
 
   <div class="row justify-content-center">
     <div class="col-4 site-colour-light pt-5 px-5 pb-2 rounded site-text-dark">

@@ -5,6 +5,11 @@
 DBView
 {% endblock %}
 
+{% block navblock %}
+  <li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Upload</li>
+{% endblock %}
+
 {% block body_block %}
 <br>
 <h1>Test</h1>
@@ -14,10 +19,6 @@ DBView
   {% endfor %}
 </ul>
 
-<div class="nav">
-  <a class="nav" href="{% url 'webapp:home' %}"> Home </a>
-  > Update View
-</div>
 <div style='display: grid;  text-align: center; background-color: #E5EEE9'>
 
 

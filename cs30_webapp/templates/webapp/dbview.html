@@ -5,12 +5,12 @@
 DBView
 {% endblock %}
 
-{% block body_block %}
-<div class="nav">
-  <a class="nav" href="{% url 'webapp:home' %}"> Home </a>
-  > Database View
-</div>
+{% block navblock %}
+  <li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
+  <li class="breadcrumb-item active" aria-current="page">DBView</li>
+{% endblock %}
 
+{% block body_block %}
 
 <div style='display: grid; text-align: center; background-color: #E5EEE9'>
   <table>
