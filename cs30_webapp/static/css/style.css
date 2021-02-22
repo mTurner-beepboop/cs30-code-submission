@@ -1,38 +1,38 @@
-body{
-	min-height: 100vh;
-	padding-bottom: 50px;
-	background-color: #E5EEE9;
+body {
+  min-height: 100vh;
+  padding-bottom: 50px;
+  background-color: #E5EEE9;
 }
 
-html{
-	min-height: 100%;
+html {
+  min-height: 100%;
 }
 
-.site-colour{
-	background-color: #017a5b;
+.site-colour {
+  background-color: #017a5b;
 }
 
-.site-colour-light{
-	background-color:#b4e3d7;
+.site-colour-light {
+  background-color: #b4e3d7;
 }
 
-.site-text-dark{
-	color:#017a5b;
+.site-text-dark {
+  color: #017a5b;
 }
 
-.button-menu{
-	height:75px;
-	font-size:32px;
-	color:#006d5f;
-	background-color:#b4e3d7;
+.button-menu {
+  height: 75px;
+  font-size: 32px;
+  color: #006d5f;
+  background-color: #b4e3d7;
 }
 
-.nav-text{
-	font-size:24px;
-	color:white;
+.nav-text {
+  font-size: 24px;
+  color: white;
 }
 
 .btn:hover {
-		color:white;
-    background-color:#017a5b !important;
+  color: white;
+  background-color: #017a5b !important;
 }

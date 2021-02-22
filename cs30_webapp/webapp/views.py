@@ -12,25 +12,25 @@ from django.contrib import messages
 import requests
 
 
-
 def home(request):
-    return render(request,'webapp/home.html')
+    return render(request, 'webapp/home.html')
 
 
 def edit(request):
-    return render(request,'webapp/edit.html')
+    return render(request, 'webapp/edit.html')
+
 
 def add(request):
-    return render(request,'webapp/add.html')
+    return render(request, 'webapp/add.html')
 
 
-
-#This view serves 3 pages, view, edit and upload, these might need to be separate. edit will require a push request, upload will probably need to use the population script (are we completely deleting data in the database or updating?)
+# This view serves 3 pages, view, edit and upload, these might need to be separate. edit will require a push request, upload will probably need to use the population script (are we completely deleting data in the database or updating?)
 def dbview(request):
-    response = requests.get('http://localhost:8000/api/carbon') #The url here will need to be made more general so it doesn't need to be changed based on host, I don't remember how to do that though
-    entries = response.json() #This line puts the response into a python dictionary
+    # The url here will need to be made more general so it doesn't need to be changed based on host, I don't remember how to do that though
+    response = requests.get('http://localhost:8000/api/carbon')
+    entries = response.json()  # This line puts the response into a python dictionary
 
-    return render(request,'webapp/dbview.html', {'entries': entries})
+    return render(request, 'webapp/dbview.html', {'entries': entries})
 
 
 def register(request):
@@ -52,8 +52,8 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-
-            messages.success(request,'Thank you for registering! Please wait for a staff member to activate your account.')
+            messages.success(
+                request, 'Thank you for registering! Please wait for a staff member to activate your account.')
             return render(request, 'webapp/home.html')
         else:
             # Invalid form or forms - mistakes or something else?
@@ -64,9 +64,9 @@ def register(request):
         # These forms will be blank, ready for user input.
         user_form = UserForm()
 
-
     # Render the template depending on the context.
-    return render(request, 'webapp/register.html', context = {'user_form': user_form})
+    return render(request, 'webapp/register.html', context={'user_form': user_form})
+
 
 def user_login(request):
     context = RequestContext(request)
@@ -87,14 +87,16 @@ def user_login(request):
                 return redirect(reverse('webapp:home'))
             else:
                 # An inactive account was used - no logging in!
-                messages.error(request,'Your account has not been activated, please contact a staff member.')
+                messages.error(
+                    request, 'Your account has not been activated, please contact a staff member.')
                 return render(request, 'webapp/login.html')
         else:
             # Bad login details were provided. So we can't log the user in.
-            #This print displays their username and password on the console, enable for debug only.
+            # This print displays their username and password on the console, enable for debug only.
             #print(f"Invalid login details: {username}, {password}")
 
-            messages.error(request,'Username or password was incorrect, please try again.')
+            messages.error(
+                request, 'Username or password was incorrect, please try again.')
             return render(request, 'webapp/login.html')
 
     # The request is not a HTTP POST, so display the login form.
@@ -103,7 +105,6 @@ def user_login(request):
         # No context variables to pass to the template system, hence the
         # blank dictionary object...
         return render(request, 'webapp/login.html')
-
 
 
 @login_required

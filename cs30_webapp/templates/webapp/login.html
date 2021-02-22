@@ -6,46 +6,46 @@ Login
 {% endblock %}
 
 {% block navblock %}
-  <li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
-  <li class="breadcrumb-item active" aria-current="page">Login</li>
+<li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">Login</li>
 {% endblock %}
 
 {% block body_block %}
 
-  <div class="row justify-content-center">
-    <div class="col-4 site-colour-light pt-5 px-5 pb-2 rounded site-text-dark">
-      <form id="login_form" method="post" action=".">
-        {% csrf_token %}
+<div class="row justify-content-center">
+  <div class="col-4 site-colour-light pt-5 px-5 pb-2 rounded site-text-dark">
+    <form id="login_form" method="post" action=".">
+      {% csrf_token %}
 
-        <label for="username" class="form-label">Username:</label>
-        <input type="text" name="username" id="username" class="form-control" aria-describedby="username" required autofocus>
-        <div id="username" class="form-text">
-          <!--This space is for help comments eg "Usernames must contain uppercase letter" etc -->
-        </div>
-
-        <label for="password" class="form-label">Password:</label>
-        <input type="password" name="password" id="password" class="form-control" aria-describedby="password" required autofocus>
-        <div id="password" class="form-text">
-          <!--This space is for help comments eg "Usernames must contain uppercase letter" etc -->
-        </div>
-
-        <div>
-
-          {% for message in messages %}
-          {{ message }}
-          {% endfor %}
-
-        </div>
-        <button class="btn btn-primary my-3" type="submit"> Login </button>
-      </form>
-
-      <div>
-        <p>
-          Dont have an account? <a href="{% url 'webapp:register' %}"> Register </a>
-        </p>
+      <label for="username" class="form-label mt-1">Username:</label>
+      <input type="text" name="username" id="username" class="form-control" aria-describedby="username" required autofocus>
+      <div id="username" class="form-text">
+        <!--This space is for help comments eg "Usernames must contain uppercase letter" etc -->
       </div>
 
+      <label for="password" class="form-label mt-1">Password:</label>
+      <input type="password" name="password" id="password" class="form-control" aria-describedby="password" required autofocus>
+      <div id="password" class="form-text">
+        <!--This space is for help comments eg "Usernames must contain uppercase letter" etc -->
+      </div>
+
+      <div>
+
+        {% for message in messages %}
+        {{ message }}
+        {% endfor %}
+
+      </div>
+      <button class="btn btn-primary my-3" type="submit"> Login </button>
+    </form>
+
+    <div>
+      <p>
+        Dont have an account? <a href="{% url 'webapp:register' %}"> Register </a>
+      </p>
     </div>
+
   </div>
+</div>
 </div>
 {% endblock %}
