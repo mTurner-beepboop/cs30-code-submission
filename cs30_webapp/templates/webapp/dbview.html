@@ -10,8 +10,13 @@ DBView
 <li class="breadcrumb-item active" aria-current="page">DBView</li>
 {% endblock %}
 
-{% block body_block %}
 
+{% block body_block %}
+<div class="row justify-content-end mb-2">
+  <div class="col-md-auto">
+    <a type="button" class="btn btn-primary" href="{% url 'webapp:add' %}"> Upload </a>
+  </div>
+</div>
 <div style='display: grid; text-align: center; background-color: #E5EEE9'>
   <table>
     <tr>
@@ -70,7 +75,6 @@ DBView
             </div>
           </div>
       </td>
-
     </tr>
     {% endfor %}
   </table>
