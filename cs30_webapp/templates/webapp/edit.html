@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block title_block %}
-EditDB
+EditDB - {{ entry.ref_num  }}
 {% endblock %}
 
 {% block navblock %}
@@ -12,8 +12,6 @@ EditDB
 {% endblock %}
 
 {% block body_block %}
-<br>
-<h1>{{ entry.ref_num  }}</h1>
 <ul>
   {% for entry in entries %}
   <li>{{ entry.ref_num }}</li>

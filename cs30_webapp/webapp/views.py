@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from webapp.forms import UserForm
+from webapp.forms import UserForm, UploadFlatFileForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -11,7 +11,7 @@ from django.urls import reverse
 from django.contrib import messages
 import requests
 
-@login_required
+
 def home(request):
     return render(request, 'webapp/home.html')
 
@@ -20,9 +20,22 @@ def edit(request, refnum):
     entry = requests.get('http://localhost:8000/api/carbon/' + refnum).json()
     return render(request, 'webapp/edit.html', {'entry':entry})
 
+
 @login_required
 def add(request):
-    return render(request, 'webapp/add.html')
+    if request.method == 'POST':
+        file_form = UploadFlatFileForm(request.POST, request.FILES)
+
+        if file_form.is_valid():
+            #do nothing for Now
+            #Should check if upload successful then display one of these messages.
+            messages.success(request, 'Upload successful!')
+            messages.error(request, 'Upload unsuccessful, please check file format/filetype and try again.')
+            return redirect(reverse('webapp:add'))
+    else:
+        file_form = UploadFlatFileForm()
+
+    return render(request, 'webapp/add.html', context={'file_form': file_form})
 
 
 @login_required
@@ -60,8 +73,7 @@ def register(request):
             user.set_password(user.password)
             user.save()
 
-            messages.success(
-                request, 'Thank you for registering! Please wait for a staff member to activate your account.')
+            messages.success(request, 'Thank you for registering! Please wait for a staff member to activate your account.')
             return render(request, 'webapp/home.html')
         else:
             # Invalid form or forms - mistakes or something else?
