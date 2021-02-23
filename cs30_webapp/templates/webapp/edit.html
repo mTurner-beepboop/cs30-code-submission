@@ -5,6 +5,10 @@
 EditDB - {{ entry.ref_num  }}
 {% endblock %}
 
+{% block headblock %}
+
+{% endblock %}
+
 {% block navblock %}
 <li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
 <li class="breadcrumb-item"><a href="{% url 'webapp:dbview' %}">DBView</a></li>
@@ -55,7 +59,9 @@ EditDB - {{ entry.ref_num  }}
       <td>{{ entry.other_info.preference }}</td>
       <td>{{ entry.other_info.source  }}</td>
       <td>
-          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}"> Delete </button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}">
+            Del
+          </button>
           <!-- Modal for delete button to reduce/prevent accidental deletions.-->
           <div class="modal fade" id="id{{ entry.ref_num  }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
@@ -85,7 +91,7 @@ EditDB - {{ entry.ref_num  }}
 
 <div class="row justify-content-center mt-5">
   <div class="col-1 site-colour-light py-2 px-3 rounded site-text-dark text-center">
-    <a type="button" class="btn btn-primary" href=""> Save </a>
+    <a type="button" class="btn btn-primary" href=""> <i class="bi bi-save2-fill"></i> Save </a>
   </div>
 </div>
 {% endblock %}

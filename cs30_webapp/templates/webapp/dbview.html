@@ -52,7 +52,9 @@ DBView
       <td>{{ entry.other_info.source  }}</td>
       <td><a type="button" class="btn btn-warning btn-sm" href="{% url 'webapp:edit' entry.ref_num  %}"> Edit </a></td>
       <td>
-          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}"> Del </button>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}">
+            Del
+          </button>
           <!-- Modal for delete button to reduce/prevent accidental deletions.-->
           <div class="modal fade" id="id{{ entry.ref_num  }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
