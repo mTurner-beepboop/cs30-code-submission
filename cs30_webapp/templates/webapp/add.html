@@ -22,19 +22,22 @@ Upload
 <div class="row justify-content-center">
   <div class="col-4 site-colour-light pt-5 px-5 pb-2 rounded site-text-dark">
 
+
     <!-- Horrendous <p> as palceholder for now until formset is completed. -->
-    <p> Id - Generated<br/>
-    scope : <input type="text" value="2"><br/>
-    Level1:<br/>
-    Level:<br/>
+    <h3> WIP - Not representative of final result.</h3>
+    <p> Id : <input type="text" placeholder="1234"><br/>
+    scope : <input type="text" placeholder="Scope 2"><br/>
+    Level1: <input type="text" placeholder="Food"><br/>
+    Level: <input type="text" placeholder="Egg"><br/>
     ...<br/>
-    Source:<br/>
-    <br/>
+    Source: <input type="text" placeholder="www.websitename.com"><br/><br/>
+    <a type="button" class="btn btn-warning"> Save Entry </a> <br/>
     OR<br/>
     </p>
-
-
     <a type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#idUpload"> Upload File</a>
+
+
+
   </div>
 </div>
 
@@ -53,7 +56,7 @@ Upload
         {% endfor %}
       </div>
       <div class="modal-footer">
-        <form id="file_form" method="post" action="webapp/register/" enctype="multipart/form-data">
+        <form id="file_form" method="post" action="{% url 'webapp:home' %}" enctype="multipart/form-data">
           <button type="submit" class="btn btn-primary">Upload File</button>
       </form>
       </div>

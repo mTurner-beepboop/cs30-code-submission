@@ -24,6 +24,7 @@ EditDB - {{ entry.ref_num  }}
 
 <div class="mt-4" style='display: grid; text-align: center; background-color: #E5EEE9'>
 
+  <h3> {{ entry.ref_num  }} </h3>
 
 
   <table>
@@ -45,10 +46,9 @@ EditDB - {{ entry.ref_num  }}
     </tr>
 
     <tr>
-
-      <td>{{ entry.ref_num  }}</td>
-      <td>{{ entry.navigation_info.scope  }}</td>
-      <td>{{ entry.navigation_info.level1  }}</td>
+      <td><input type="text" value="1234"></td>
+      <td><input type="text" value="Scope 2"></td>
+      <td><input type="text" value="Food"></td>
       <td>{{ entry.navigation_info.level2  }}</td>
       <td>{{ entry.navigation_info.level3  }}</td>
       <td>{{ entry.navigation_info.level4  }}</td>
