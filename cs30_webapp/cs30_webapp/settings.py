@@ -28,9 +28,13 @@ MEDIA_URL = '/media/'
 
 #CORS Informaation - For now just allows requests from the device running this
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:8000',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:8000',
+# )
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
