@@ -102,7 +102,7 @@ DATABASES = {
     'default': { 
         'ENGINE': 'djongo',
         "CLIENT": {
-            "name": 'test', #Change to flatfile in final version
+            "name": 'carbon', #old versions using 'test'
             "host": "mongodb+srv://Mark_2386300:2386300@cluster0.rpq32.mongodb.net/test?retryWrites=true&w=majority",
             "username": 'Mark_2386300',#For now this will be hardcoded with the admin username and password
             "password": '2386300',
