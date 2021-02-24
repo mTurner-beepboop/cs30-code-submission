@@ -10,7 +10,7 @@ from api.serializers import ApiSerializer, NavigationSerializer
 @api_view(['GET','POST','DELETE'])
 def entry_list(request):
     #GET list of entries, POST new entry, DELETE all entries
-    if request.method == 'GET': #Retreive all entries or find entries by title
+    if request.method == 'GET': #Retreive all entries or find entries by ref_number
         entries = FlatfileEntry.objects.all()
         
         ref_num = request.GET.get('ref_num', None)
@@ -18,22 +18,29 @@ def entry_list(request):
             entries = entries.filter(ref_num__icontains=ref_num)
             
         api_serializer = ApiSerializer(entries, many=True)
-        return JsonResponse(api_serializer.data, safe=False)
+        return JsonResponse(api_serializer.data, safe=False, status=status.HTTP_200_OK)
     elif request.method == 'POST': #Create and save new entry
+        '''
+        NOTE: This is a security issue - there is no restriction one who can input data, allowing
+        for malicious actors to tamper with the database
+        '''
         entry_data = request.data
 
         api_serializer = ApiSerializer(data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
-            return JsonResponse(api_serializer.data, status=status.HTTP_201_CREATED)
+            return JsonResponse(status=status.HTTP_201_CREATED)
         return JsonResponse(api_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE': #Delete all entries - likely not needed in final implementation
+        '''
+        NOTE: this is a security issue - the is no restriction on who can send this delete request
+        '''
         count = FlatfileEntry.objects.all().delete()
         #delete artifacts from nav, calc and other info
         NavigationInfo.objects.all().delete()
         CalculationInfo.objects.all().delete()
         OtherInfo.objects.all().delete()
-        return JsonResponse({'message': '{} entires were deleted'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse({'message': '{} entires were deleted'.format(count[0])}, status=status.HTTP_200_OK)
     
     
 @api_view(['GET','PUT','DELETE'])
@@ -42,22 +49,31 @@ def entry_detail(request, pk):
     try:
         entry = FlatfileEntry.objects.get(pk=pk)
     except entry.DoesNotExist:
-        return JsonResponse({'message': 'Entry not found'})
+        return JsonResponse(status=status.HTTP_404_NOT_FOUND)
+    except:
+        return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
         
     #GET / PUT / DELETE entry
     if request.method == 'GET': #Gets entry by specified id
         api_serializer = ApiSerializer(entry)
-        return JsonResponse(api_serializer.data)
+        return JsonResponse(api_serializer.data, status=status.HTTP_200_OK)
     elif request.method == 'PUT': #Update an existing entry
+        '''
+        NOTE: this is a security issue - the is no restriction on who can send this update request,
+        allowing for malicious actors to tamper with data
+        '''
         entry_data = request.data
         api_serializer = ApiSerializer(entry, data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
-            return JsonResponse(api_serializer.data)
+            return JsonResponse(status=status.HTTP_200_OK)
         return JsonResponse(api_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE': #Deletes entry by id
+        '''
+        NOTE: this is a security issue - the is no restriction on who can send this delete request
+        '''
         entry.delete()
-        return JsonResponse({'message': 'Entry was deleted'}, status=status.HTTP_204_NO_CONTENT)
+        return JsonResponse(status=status.HTTP_200_OK)
         
 @api_view(['GET','POST'])
 def categories(request):
@@ -67,11 +83,14 @@ def categories(request):
         scopes = []
         for dict in dict_scope_list:
             scopes.append(dict['scope'])
-        return JsonResponse({'message':scopes})
+        return JsonResponse({'message':scopes}, status=status.HTTP_200_OK)
     if request.method == 'POST':
         #Return list of possible levels
         path = request.data
         levels = ['scope','level1','level2','level3','level4','level5']
+        for p in path.keys():
+            if p not in levels:
+                return JsonResponse({'message':'Malformed request, ', status=status.HTTP_400_BAD_REQUEST)
         nav_data = NavigationInfo.objects.all()
         i=0
         for level in levels:
@@ -99,14 +118,14 @@ def categories(request):
             level_names.append(dict[levels[i]])
             
         if len(nav_data) > 1: #If there's more than one available path, no one id associated so leave as 0
-            return JsonResponse({'subcategories':level_names, 'id':0})
+            return JsonResponse({'subcategories':level_names, 'id':0}, status=status.HTTP_200_OK)
         elif len(nav_data) == 1: #If there's one available path, find id associated and return it
             nav_id = list(nav_data.values('id'))[0]['id']
             entry = FlatfileEntry.objects.get(navigation_info=nav_id)
             id = entry.ref_num
-            return JsonResponse({'subcategories':level_names, 'id':id})
+            return JsonResponse({'subcategories':level_names, 'id':id}, status=status.HTTP_200_OK)
         else: #If there are no paths, an error occurred in API call, return error message
-            return JsonResponse({'message': 'Path not found'})
+            return JsonResponse({'message': 'Path not found'}, status=status.HTTP_404_NOT_FOUND)
             
 @api_view(['POST'])
 def item_calc(request):
@@ -114,8 +133,10 @@ def item_calc(request):
         #Find entry of given id
         try:
             entry = FlatfileEntry.objects.filter(pk=request.data['id'])[0]
+        except entry.DoesNotExist:
+            return JsonResponse(status=status.HTTP_404_NOT_FOUND)
         except:
-            return JsonResponse({"message":"Entry not found"})
+            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
         
         #Collect the right information
         source = entry.other_info.source
@@ -123,6 +144,9 @@ def item_calc(request):
         factor = entry.calculation_info.ef
         
         #Calculate the total
-        total = factor * request.data['amount']
-        
-        return JsonResponse({"total":total, "calc_unit":unit, "source":source})
+        try:
+            total = factor * request.data['amount']
+        except:
+            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+            
+        return JsonResponse({"total":total, "calc_unit":unit, "source":source}, status=status.HTTP_200_OK)
