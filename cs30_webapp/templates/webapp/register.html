@@ -23,13 +23,13 @@ Sign Up
         <label for="{{ field.label }}" class="form-label mt-2">{{ field.label }}: </label>
 
         {% if field.label == 'Username' %}
-          <input type="text" id="{{ field.label }}" class="form-control" aria-describedby="{{ field.label }}HelpBlock" required autofocus>
+          <input type="text" name="username" id="{{ field.label }}" class="form-control" aria-describedby="{{ field.label }}HelpBlock" required autofocus>
 
         {% elif field.label == 'Email address' %}
-          <input type="text" id="{{ field.label }}" class="form-control" aria-describedby="{{ field.label }}HelpBlock">
+          <input type="text" name="email" id="{{ field.label }}" class="form-control" aria-describedby="{{ field.label }}HelpBlock">
 
         {% else %}
-          <input type="password" id="{{ field.label }}" class="form-control" aria-describedby="{{ field.label }}HelpBlock" required autofocus>
+          <input type="password" name="password" id="{{ field.label }}" class="form-control" aria-describedby="{{ field.label }}HelpBlock" required>
           <div id="{{ field.label }}HelpBlock" class="form-text pb-2">
             <!--This space is for help comments eg "Usernames must contain uppercase letter" etc -->
           </div>
