@@ -4,10 +4,10 @@ from django.utils import timezone
 class NavigationInfo(models.Model):
     scope = models.CharField(max_length=150)
     level1 = models.CharField(max_length=150)
-    level2 = models.CharField(max_length=150)
-    level3 = models.CharField(max_length=150)
-    level4 = models.CharField(max_length=150)
-    level5 = models.CharField(max_length=150)
+    level2 = models.CharField(max_length=150, blank=True)
+    level3 = models.CharField(max_length=150, blank=True)
+    level4 = models.CharField(max_length=150, blank=True)
+    level5 = models.CharField(max_length=150, blank=True)
     
 class CalculationInfo(models.Model):
     ef = models.FloatField()
