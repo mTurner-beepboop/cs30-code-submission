@@ -17,7 +17,7 @@ def home(request):
 
 @login_required
 def edit(request, refnum):
-    entry = requests.get('http://localhost:8000/api/carbon/' + refnum).json()
+    entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + refnum).json()
     return render(request, 'webapp/edit.html', {'entry':entry})
 
 
@@ -41,7 +41,7 @@ def add(request):
 @login_required
 def delete(request, refnum):
     if request.method == 'POST':
-        requests.delete('http://localhost:8000/api/carbon/' + refnum)
+        requests.delete('http://cs30.herokuapp.com/api/carbon/' + refnum)
         return redirect(reverse('webapp:dbview'))
     return render(request, 'webapp/dbview.html', {'entries': entries})
 
@@ -50,7 +50,7 @@ def delete(request, refnum):
 @login_required
 def dbview(request):
     # The url here will need to be made more general so it doesn't need to be changed based on host, I don't remember how to do that though
-    entries = requests.get('http://localhost:8000/api/carbon').json()
+    entries = requests.get('http://cs30.herokuapp.com/api/carbon').json()
     return render(request, 'webapp/dbview.html', {'entries': entries})
 
 

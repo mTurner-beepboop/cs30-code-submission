@@ -39,9 +39,9 @@ CORS_ORIGIN_WHITELIST = (
 SECRET_KEY = ')xz@t@d8gc3s1uw!#zsb9^9#198@3f!0a4n)c)%o9aqo^*$k30'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['.herokuapp.com']
 
 
 # Application definition
