@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from api.models import FlatfileEntry, NavigationInfo, CalculationInfo, OtherInfo
 from api.serializers import ApiSerializer, NavigationSerializer
+import json
 
 @api_view(['GET','POST','DELETE'])
 def entry_list(request):
@@ -21,6 +22,8 @@ def entry_list(request):
         return JsonResponse(api_serializer.data, safe=False)
     elif request.method == 'POST': #Create and save new entry
         entry_data = request.data
+        if 'payload' in entry_data.keys():
+            entry_data = json.loads(entry_data['payload'])
 
         api_serializer = ApiSerializer(data=entry_data)
         if api_serializer.is_valid():
@@ -39,6 +42,7 @@ def entry_list(request):
 @api_view(['GET','PUT','DELETE'])
 def entry_detail(request, pk):
     #find entry by id
+    entry = FlatfileEntry
     try:
         entry = FlatfileEntry.objects.get(pk=pk)
     except entry.DoesNotExist:
@@ -50,6 +54,9 @@ def entry_detail(request, pk):
         return JsonResponse(api_serializer.data)
     elif request.method == 'PUT': #Update an existing entry
         entry_data = request.data
+        if 'payload' in entry_data.keys():
+            entry_data = json.loads(entry_data['payload'])
+        
         api_serializer = ApiSerializer(entry, data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
