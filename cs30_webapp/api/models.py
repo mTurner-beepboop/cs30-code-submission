@@ -3,11 +3,11 @@ from django.utils import timezone
 
 class NavigationInfo(models.Model):
     scope = models.CharField(max_length=150)
-    level1 = models.CharField(max_length=150)
-    level2 = models.CharField(max_length=150, blank=True)
-    level3 = models.CharField(max_length=150, blank=True)
-    level4 = models.CharField(max_length=150, blank=True)
-    level5 = models.CharField(max_length=150, blank=True)
+    level1 = models.CharField(max_length=150, blank=True, null=True)
+    level2 = models.CharField(max_length=150, blank=True, null=True)
+    level3 = models.CharField(max_length=150, blank=True, null=True)
+    level4 = models.CharField(max_length=150, blank=True, null=True)
+    level5 = models.CharField(max_length=150, blank=True, null=True)
     
 class CalculationInfo(models.Model):
     ef = models.FloatField()

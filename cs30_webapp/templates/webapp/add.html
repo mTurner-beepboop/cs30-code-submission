@@ -1,0 +1,67 @@
+{% extends 'webapp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Upload
+{% endblock %}
+
+{% block navblock %}
+<li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
+<li class="breadcrumb-item"><a href="{% url 'webapp:dbview' %}">DBView</a></li>
+<li class="breadcrumb-item active" aria-current="page">Upload</li>
+{% endblock %}
+
+{% for message in messages %}
+{{ message }}
+{% endfor %}
+
+{% block body_block %}
+
+
+
+<div class="row justify-content-center">
+  <div class="col-4 site-colour-light pt-5 px-5 pb-2 rounded site-text-dark">
+
+
+    <!-- Horrendous <p> as palceholder for now until formset is completed. -->
+    <h3> WIP - Not representative of final result.</h3>
+    <p> Id : <input type="text" placeholder="1234"><br/>
+    scope : <input type="text" placeholder="Scope 2"><br/>
+    Level1: <input type="text" placeholder="Food"><br/>
+    Level: <input type="text" placeholder="Egg"><br/>
+    ...<br/>
+    Source: <input type="text" placeholder="www.websitename.com"><br/><br/>
+    <a type="button" class="btn btn-warning"> Save Entry </a> <br/>
+    OR<br/>
+    </p>
+    <a type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#idUpload"> Upload File</a>
+
+
+
+  </div>
+</div>
+
+<!-- Modal for delete button to reduce/prevent accidental deletions.-->
+<div class="modal fade" id="idUpload" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-top">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Flatfile Upload</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {% csrf_token %}
+        {% for field in file_form %}
+        {{ field }}
+        {% endfor %}
+      </div>
+      <div class="modal-footer">
+        <form id="file_form" method="post" action="{% url 'webapp:home' %}" enctype="multipart/form-data">
+          <button type="submit" class="btn btn-primary">Upload File</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

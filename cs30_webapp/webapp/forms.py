@@ -13,3 +13,5 @@ class UserForm(forms.ModelForm):
         model = User
         fields = ('username', 'email', 'password',)
 
+class UploadFlatFileForm(forms.Form):
+    title = forms.forms.FileField()

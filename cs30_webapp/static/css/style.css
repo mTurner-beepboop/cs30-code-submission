@@ -1,77 +1,40 @@
-.form{
-	text-align: center;
-	width: 90%; 
-	height: 100vh;
-	background-color: #E5EEE9;
-	font-family: Calibri;
-	}
-
-.header{
-	padding-top: 1em;
-	padding-bottom: 1em;
-	background-color: #017A5B;
+body {
+  min-height: 100vh;
+  padding-bottom: 50px;
+  background-color: #E5EEE9;
 }
 
-.loginb{
-	background-color: #B4E3D8;
-	border: none;
-	padding: 1em 3em;
-	margin-top: 2em;
+html {
+  min-height: 100%;
 }
 
-.formtext{
-	margin-left: -320px;
+.site-colour {
+  background-color: #017a5b;
 }
 
-.input{
-	background-color:#E0E0E0;
-	border: 0px;
-	padding: 0.5em;
+.site-colour-light {
+  background-color: #b4e3d7;
 }
 
-.nav{
-	text-align:left;
-	text-decoration:none;
-	color:#00CF79;
-	padding:0.5em;
-	font-weight:900;
+.site-text-dark {
+  color: #017a5b;
 }
 
-.welcome{
-	font-size:36px;
-	font-weight:900;
-	color:#017A5B;
-	
+.button-menu {
+  height: 75px;
+  font-size: 32px;
+  color: #006d5f;
+  background-color: #b4e3d7;
 }
 
-.bodytext{
-	width:60%;
-	background-color:#FFFFFF;
-	
+.nav-text {
+  font-size: 24px;
+  color: white;
 }
 
-
-
-input{
-	background-color:#E0E0E0;
-	border: 0px;
-	padding: 0.5em;
-	
+.btn:hover.button-menu {
+  color: white;
+  background-color: #017a5b !important;
 }
 
-
-.alternativetext{
-	color:#017A5B ;
-	
-}
-
-
-.buttons{
-	height:10%;
-	content-align:center;
-}
-
-
-
-
-
+     

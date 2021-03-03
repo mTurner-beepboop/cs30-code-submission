@@ -6,6 +6,7 @@ from rest_framework import status
 from rest_framework.decorators import api_view
 from api.models import FlatfileEntry, NavigationInfo, CalculationInfo, OtherInfo
 from api.serializers import ApiSerializer, NavigationSerializer
+import json
 
 @api_view(['GET','POST','DELETE'])
 def entry_list(request):
@@ -25,6 +26,8 @@ def entry_list(request):
         for malicious actors to tamper with the database
         '''
         entry_data = request.data
+        if 'payload' in entry_data.keys():
+            entry_data = json.loads(entry_data['payload'])
 
         api_serializer = ApiSerializer(data=entry_data)
         if api_serializer.is_valid():
@@ -46,6 +49,7 @@ def entry_list(request):
 @api_view(['GET','PUT','DELETE'])
 def entry_detail(request, pk):
     #find entry by id
+    entry = FlatfileEntry
     try:
         entry = FlatfileEntry.objects.get(pk=pk)
     except entry.DoesNotExist:
@@ -63,6 +67,9 @@ def entry_detail(request, pk):
         allowing for malicious actors to tamper with data
         '''
         entry_data = request.data
+        if 'payload' in entry_data.keys():
+            entry_data = json.loads(entry_data['payload'])
+        
         api_serializer = ApiSerializer(entry, data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()

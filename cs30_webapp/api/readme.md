@@ -9,11 +9,11 @@ Since many requests may use the same form of JSON request/response, they will be
  'ref_num':<int > 999> 
  'navigation_info':{
 	'scope':<ONE of 'Scope 1','Scope 2','Scope 3'>
-	'level_1':<string>
-	'level_2':<string>
-	'level_3':<string>
-	'level_4':<string>
-	'level_5':<string>
+	'level1':<string>
+	'level2':<string>
+	'level3':<string>
+	'level4':<string>
+	'level5':<string>
 	}
 'calculation_info':{
 	'ef':<double>

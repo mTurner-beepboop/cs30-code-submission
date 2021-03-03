@@ -26,7 +26,7 @@ MEDIA_DIR = os.path.join(BASE_DIR,'media')
 MEDIA_ROOT = MEDIA_DIR
 MEDIA_URL = '/media/'
 
-#CORS Informaation - For now just allows requests from the device running this 
+#CORS Informaation - For now just allows requests from the device running this
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
@@ -41,7 +41,6 @@ SECRET_KEY = ')xz@t@d8gc3s1uw!#zsb9^9#198@3f!0a4n)c)%o9aqo^*$k30'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-#This should be changes once hosted, just for testing.
 ALLOWED_HOSTS = ['*']
 
 
@@ -99,11 +98,11 @@ WSGI_APPLICATION = 'cs30_webapp.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': { 
+    'default': {
         'ENGINE': 'djongo',
         "CLIENT": {
-            "name": 'carbon', #old versions using 'test'
-            "host": "mongodb+srv://Mark_2386300:2386300@cluster0.rpq32.mongodb.net/test?retryWrites=true&w=majority",
+            "name": 'carbon', #Change to flatfile in final version
+            "host": "mongodb+srv://Mark_2386300:2386300@cluster0.rpq32.mongodb.net/carbon?retryWrites=true&w=majority",
             "username": 'Mark_2386300',#For now this will be hardcoded with the admin username and password
             "password": '2386300',
             "authMechanism": "SCRAM-SHA-1",
