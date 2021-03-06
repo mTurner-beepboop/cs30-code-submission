@@ -46,11 +46,15 @@ def delete(request, refnum):
     return render(request, 'webapp/dbview.html', {'entries': entries})
 
 
+import datetime
 # This view serves 3 pages, view, edit and upload, these might need to be separate. edit will require a push request, upload will probably need to use the population script (are we completely deleting data in the database or updating?)
 @login_required
 def dbview(request):
     # The url here will need to be made more general so it doesn't need to be changed based on host, I don't remember how to do that though
     entries = requests.get('http://cs30.herokuapp.com/api/carbon').json()
+
+    for entry in entries:
+        entry['other_info']['last_update'] = datetime.datetime.strptime(entry['other_info']['last_update'],'%Y-%m-%dT%H:%M:%SZ')
     return render(request, 'webapp/dbview.html', {'entries': entries})
 
 
