@@ -18,6 +18,7 @@ def home(request):
 @login_required
 def edit(request, refnum):
     entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + refnum).json()
+    entry['other_info']['last_update'] = datetime.datetime.strptime(entry['other_info']['last_update'],'%Y-%m-%dT%H:%M:%SZ')
     return render(request, 'webapp/edit.html', {'entry':entry})
 
 
