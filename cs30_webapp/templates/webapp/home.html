@@ -19,21 +19,25 @@ Home
       {{ message }}
       {% endfor %}
 
-      {% if user.is_authenticated %}
 
-      <div class="d-grid gap-2 col-12 mx-auto"">
-        <a class="btn button-menu" href="{% url 'webapp:dbview' %}">Viewdb</a>
-        <a class="btn button-menu" href="{% url 'webapp:add' %}">Upload</a>
-        <a class="btn button-menu" href="{% url 'webapp:logout' %}">Logout</a>
-      </div>
 
-      {% else %}
-      <div class="d-grid gap-2 col-12 mx-auto">
-        <a class="btn button-menu" href="{% url 'webapp:register' %}">Register</a>
-        <a class="btn button-menu" href="{% url 'webapp:login' %}">Login</a>
-      </div>
+        <div class="d-grid gap-2 col-12 mx-auto"">
+          {% if user.is_authenticated %}
 
-      {% endif %}
+            {% if user.is_superuser %}
+              <a class="btn button-menu" href="{% url 'admin:index' %}">Admin</a>
+            {% endif %}
+
+            <a class="btn button-menu" href="{% url 'webapp:dbview' %}">Viewdb</a>
+            <a class="btn button-menu" href="{% url 'webapp:add' %}">Upload</a>
+            <a class="btn button-menu" href="{% url 'webapp:logout' %}">Logout</a>
+            
+          {% else %}
+              <a class="btn button-menu" href="{% url 'webapp:register' %}">Register</a>
+              <a class="btn button-menu" href="{% url 'webapp:login' %}">Login</a>
+
+          {% endif %}
+        </div>
     </div>
   </div>
 </div>
