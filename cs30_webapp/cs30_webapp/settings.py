@@ -39,9 +39,9 @@ CORS_ORIGIN_WHITELIST = (
 SECRET_KEY = ')xz@t@d8gc3s1uw!#zsb9^9#198@3f!0a4n)c)%o9aqo^*$k30'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1']
 
 
 # Application definition
@@ -101,7 +101,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'djongo',
         "CLIENT": {
-            "name": 'carbon', #Change to flatfile in final version
+            "name": 'carbon',
             "host": "mongodb+srv://Mark_2386300:2386300@cluster0.rpq32.mongodb.net/carbon?retryWrites=true&w=majority",
             "username": 'Mark_2386300',#For now this will be hardcoded with the admin username and password
             "password": '2386300',
