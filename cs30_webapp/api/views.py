@@ -8,6 +8,9 @@ from api.models import FlatfileEntry, NavigationInfo, CalculationInfo, OtherInfo
 from api.serializers import ApiSerializer, NavigationSerializer
 import json
 
+def home(request):
+    return render(request, 'api/home.html')
+
 @api_view(['GET','POST','DELETE'])
 def entry_list(request):
     #GET list of entries, POST new entry, DELETE all entries

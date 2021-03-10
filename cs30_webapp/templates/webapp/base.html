@@ -15,22 +15,6 @@
   {% endblock %}
 </head>
 
-<!-- <nav class="navbar navbar-light site-colour">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="{% url 'webapp:home' %}">
-      <img src="{% static '/images/logo.png' %}" alt="" width="150">
-    </a>
-    {% if user.is_authenticated %}
-    <div class="d-flex">
-      <a class="btn pe-none nav-text"> Hello, {{user.username}} </a>
-    </div>
-    <form>
-      <input class="form-control" type="search" id="search" placeholder="e.g. 1111" aria-label="search">
-      <button class="btn btn-success" type="submit" > Search </button>
-    </form>
-    {% endif %}
-  </form>
-</nav> -->
 
 
 <div class="row site-colour">
@@ -39,11 +23,35 @@
       <img src="{% static '/images/logo.png' %}" alt="" width="150">
     </a>
   </div>
+
   {% if user.is_authenticated %}
+
 
   <div class="col d-flex justify-content-center">
     <div class="d-flex mt-2">
-      <a class="btn pe-none nav-text"> Hello, {{user.username}} </a>
+      <a class="btn pe-none nav-text nav-text"> Hello, {{user.username}} </a>
+      <a type="button" class="btn btn-primary mt-2 mb-3" data-bs-toggle="modal" data-bs-target="#idInfo"> Info </a>
+    </div>
+  </div>
+
+  <div class="modal fade" id="idInfo" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-top modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="staticBackdropLabel">How to use this site :)</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+			This is the database management system for the carbon footprint calculation and visualisation suite made in collaboration with Team 29 and 30. On this end we expect you to access the data directly, to update any data that's outdated, add new data and remove old. This webapp also contains the API used on Team 29's end to connect securely to the database which is currently hosted on mongodb's ATLAS cloud service while the app is being developed, we expect that you will want to change this, maybe to run on your own servers, so we have indicated code that will need to be changed. 
+          </p>
+		  <p>
+			Information on how to use the API can be found in the API readme.md, or <a href="{% url 'api:home' %}">here</a> at the API endpoint homepage.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Ok, thanks! </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -59,15 +67,13 @@
   {% endif %}
 </div>
 
-
-
+<div>
 <nav class="mt-3 px-3" style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
   <ol class="breadcrumb">
     {% block navblock %}
     {% endblock %}
   </ol>
 </nav>
-
 
 
 <body class="">

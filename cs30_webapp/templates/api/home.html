@@ -1,0 +1,149 @@
+{% extends 'webapp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+Home
+{% endblock %}
+
+{% block navblock %}
+<li class="breadcrumb-item active" aria-current="page"><a href="{% url 'webapp:home' %}">Home</a></li>
+{% endblock %}
+
+{% block body_block %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-6">
+
+      {% for message in messages %}
+      {{ message }}
+      {% endfor %}
+
+
+
+        <div class="d-grid gap-2 col-12 mx-auto">
+		
+          {% if user.is_authenticated %}
+			<p>This is the home page for the Carbon Footprint webapp's API. Here you will find instructions for use of the different endpoints.</p>
+			<p>This is intended mainly for developers intending to understand the API, for purposes of alteration or expansion of this suite. This information is also available on the readme.md in the api app directory</p>
+			<p><b>IMPORTANT NOTE: The API is not secured by authorisation, leaving data at risk, unfortunately we didn't have time to fix this problem so for now it's security by obscurity</b></p>
+			
+			<h3>API Endpoints</h3>
+			<h4>General</h4>
+			<ul>
+			 <li>
+			  <p>/api/carbon/(reference number) (GET)</p>
+			  <div>
+				<p>No parameters needed</p>
+				<p>Returns specified entry as JSON document in flatfile form</p>
+			  </div>
+			 </li>
+			</ul>
+			<h4>Internal - ie used within dbms webapp</h4>
+			<ul>
+			 <li> 
+			  <p>/api/carbon (GET)</p>
+			  <div>
+				<p>No parameters needed</p>
+				<p>Returns all entries as a list of JSON documents in flatfile form</p>
+			  </div>
+			 </li>
+			 <li>
+			  <p>/api/carbon (POST)</p>
+			  <div>
+				<p>Parameters as defined in Flatfile form</p>
+				<p>Adds new file to database, returning HTTP response to indicate outcome</p>
+			  </div>
+			 </li>
+			 <li>
+			  <p>/api/carbon (DELETE)</p>
+			  <div>
+				<p>No parameteres needed</p>
+				<p>Deletes all files in the database - this is a development tool and should be removed as it is a security risk</p>
+			  </div>
+			 </li>
+			 <li>
+			  <p>/api/carbon/(reference number) (PUT)</p>
+			  <div>
+				<p>Parameters as defined in flatfile form</p>
+				<p>Updates specified entry with new information</p>
+			  </div>
+			 </li>
+			 <li>
+			  <p>/api/carbon/(reference number) (DELETE)</p>
+			  <div>
+				<p>No parameters needed</p>
+				<p>Deletes specified entry, returning an HTTP response to indicate outcome</p>
+			  </div>
+			 </li>
+			</ul>
+			<h4>External - ie used by visualisation app</h4>
+			<ul>
+			 <li>
+			  <p>/api/carbon/scope (GET)</p>
+			  <div>
+				<p>No parameters needed</p>
+				<p>Will return all scopes used by entries - that is, all the unique values of highest level of navigation information</p>
+			  </div>
+			 </li>
+			 <li>
+			  <p>/api/carbon/scope (POST)</p>
+			  <div>
+				<ul>
+				 <li>Scope</li>
+				 <li>Level 1</li>
+				 <li>Level 2</li>
+				 <li>Level 3</li>
+				 <li>Level 4</li>
+				</ul>
+				<p>This will return all the values for the highest level non-specified path - eg, if both scope and level 1 was specified, then it would return the currently in use level 2 values for that given path</p>
+				<p>The values will be returned as a list with name subcategories</p>
+				<p>Should there only be one item on the path specified, the reference number of that item will also be returned as ref_num</p>
+			  </div>
+			 </li>
+			 <li>
+			  <p>api/carbon/info</p>
+			  <div>
+			    <ul>
+				 <li>Reference number of item</li>
+				 <li>Amount to be calculated</li>
+				<ul>
+				<p>Used to calculate how much carbon a certain amount of an item generates, will return the number as result, the unit associated as calc_unit and the source of the information as source</p>
+			  </div>
+			 </li>
+			</ul>
+			<h4>Flatfile form</h4>
+			<p>This refers to the form the data is stored in the database, and looks like the following</p>
+			<ul>
+			 <li>ref_num</li>
+			 <li>navigation_info</li>
+			 <ul>
+			  <li>scope</li>
+			  <li>level_1</li>
+			  <li>level_2</li>
+			  <li>level_3</li>
+			  <li>level_4</li>
+			  <li>level_5</li>
+			 </ul>
+			 <li>calculation_info</li>
+			 <ul>
+		      <li>ef (emmissions factor)</li>
+			  <li>cu (calculation unit)</li>
+			 </ul>
+			 <li>other_info</li>
+			 <ul>
+			  <li>last_update</li>
+		      <li>preference</li>
+		      <li>source</li>
+		     </ul>
+		    </ul>
+		  {% else %}
+			<p>Sorry, but you must be logged in to view this for now! For security purposes</p>
+		    <!-- To remove this authentication, just get rid of the if block this is enclosed in -->
+		  {% endif %}
+        </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

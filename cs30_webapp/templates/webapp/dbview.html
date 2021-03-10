@@ -47,7 +47,7 @@ DBView
       <td>{{ entry.navigation_info.level5  }}</td>
       <td>{{ entry.calculation_info.ef  }}</td>
       <td>{{ entry.calculation_info.cu  }}</td>
-      <td>{{ entry.other_info.last_update  }}</td>
+      <td>{{ entry.other_info.last_update|date:"d/m/Y - g:i:s" }}</td>
       <td>{{ entry.other_info.preference }}</td>
       <td>{{ entry.other_info.source  }}</td>
       <td><a type="button" class="btn btn-warning btn-sm" href="{% url 'webapp:edit' entry.ref_num  %}"> Edit </a></td>
