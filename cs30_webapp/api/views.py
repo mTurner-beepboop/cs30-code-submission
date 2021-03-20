@@ -16,11 +16,11 @@ def entry_list(request):
     #GET list of entries, POST new entry, DELETE all entries
     if request.method == 'GET': #Retreive all entries or find entries by ref_number
         entries = FlatfileEntry.objects.all()
-        
+
         ref_num = request.GET.get('ref_num', None)
         if ref_num is not None:
             entries = entries.filter(ref_num__icontains=ref_num)
-            
+
         api_serializer = ApiSerializer(entries, many=True)
         return JsonResponse(api_serializer.data, safe=False, status=status.HTTP_200_OK)
     elif request.method == 'POST': #Create and save new entry
@@ -47,8 +47,8 @@ def entry_list(request):
         CalculationInfo.objects.all().delete()
         OtherInfo.objects.all().delete()
         return JsonResponse({'message': '{} entires were deleted'.format(count[0])}, status=status.HTTP_200_OK)
-    
-    
+
+
 @api_view(['GET','PUT','DELETE'])
 def entry_detail(request, pk):
     #find entry by id
@@ -59,7 +59,7 @@ def entry_detail(request, pk):
         return JsonResponse(status=status.HTTP_404_NOT_FOUND)
     except:
         return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
-        
+
     #GET / PUT / DELETE entry
     if request.method == 'GET': #Gets entry by specified id
         api_serializer = ApiSerializer(entry)
@@ -72,7 +72,7 @@ def entry_detail(request, pk):
         entry_data = request.data
         if 'payload' in entry_data.keys():
             entry_data = json.loads(entry_data['payload'])
-        
+
         api_serializer = ApiSerializer(entry, data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
@@ -84,7 +84,7 @@ def entry_detail(request, pk):
         '''
         entry.delete()
         return JsonResponse(status=status.HTTP_200_OK)
-        
+
 @api_view(['GET','POST'])
 def categories(request):
     if request.method == 'GET': #Complete
@@ -100,7 +100,7 @@ def categories(request):
         levels = ['scope','level1','level2','level3','level4','level5']
         for p in path.keys():
             if p not in levels:
-                return JsonResponse({'message':'Malformed request, ', status=status.HTTP_400_BAD_REQUEST)
+                return JsonResponse({'message':'Malformed request, '}, status=status.HTTP_400_BAD_REQUEST)
         nav_data = NavigationInfo.objects.all()
         i=0
         for level in levels:
@@ -126,7 +126,7 @@ def categories(request):
         level_names = []
         for dict in level_vals:
             level_names.append(dict[levels[i]])
-            
+
         if len(nav_data) > 1: #If there's more than one available path, no one id associated so leave as 0
             return JsonResponse({'subcategories':level_names, 'id':0}, status=status.HTTP_200_OK)
         elif len(nav_data) == 1: #If there's one available path, find id associated and return it
@@ -136,7 +136,7 @@ def categories(request):
             return JsonResponse({'subcategories':level_names, 'id':id}, status=status.HTTP_200_OK)
         else: #If there are no paths, an error occurred in API call, return error message
             return JsonResponse({'message': 'Path not found'}, status=status.HTTP_404_NOT_FOUND)
-            
+
 @api_view(['POST'])
 def item_calc(request):
     if request.method == 'POST':
@@ -147,16 +147,16 @@ def item_calc(request):
             return JsonResponse(status=status.HTTP_404_NOT_FOUND)
         except:
             return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
-        
+
         #Collect the right information
         source = entry.other_info.source
         unit = entry.calculation_info.cu
         factor = entry.calculation_info.ef
-        
+
         #Calculate the total
         try:
             total = factor * request.data['amount']
         except:
             return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
-            
+
         return JsonResponse({"total":total, "calc_unit":unit, "source":source}, status=status.HTTP_200_OK)
