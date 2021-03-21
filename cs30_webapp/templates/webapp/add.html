@@ -11,10 +11,6 @@ Upload
 <li class="breadcrumb-item active" aria-current="page">Upload</li>
 {% endblock %}
 
-{% for message in messages %}
-  {{ message }}
-{% endfor %}
-
 {% block body_block %}
 
 <div class="row justify-content-center">
@@ -25,7 +21,15 @@ Upload
       {% csrf_token %}
 
       <div>
-
+        <label for="ref_num" class="form-label mt-1">Reference Number:</label>
+        <input type="number" id="ref_num" name="ref_num" class="form-control" maxlength="5" size="4"  min="1" max="99999" value={{ entry.ref_num }} disabled></td>
+        <label for="scope" class="form-label mt-1">Scope:</label>
+        <select id="scope" name="scope" class="form-control" value={{ entry.navigation_info.scope }}>
+          <option value="Scope 1">Scope 1</option>
+          <option value="Scope 2">Scope 2</option>
+          <option value="Scope 3">Scope 3</option>
+          <option value="Outside of Scopes">Outside of Scopes</option>
+        </select
         <label for="level1" class="form-label mt-1">Level 1:</label>
         <input type="text" id="level1" name="level1" class="form-control" maxlength="30" size="10">
         <label for="level2" class="form-label mt-1">level 2:</label>
@@ -37,13 +41,11 @@ Upload
         <label for="level5" class="form-label mt-1">level 5:</label>
         <input type="text" id="level5" name="level5" maxlength="30" class="form-control" size="10">
         <label for="ef" class="form-label mt-1">EF:</label>
-        <input type="text" id="ef" name="ef" class="form-control" maxlength="30" size="10">
+        <input type="text" id="ef" name="ef" class="form-control" maxlength="30" size="10" max="99999" min="0.000001">
         <label for="cu" class="form-label mt-1">CU:</label>
         <input type="text" id="cu" name="cu" class="form-control" maxlength="30" size="6">
-        <label for="last_update" class="form-label mt-1">Last Update:</label>
-        <input type="text" id="last_update" class="form-control" name="last_update" size="10">
         <label for="preference" class="form-label mt-1">Preference:</label>
-        <input type="text" id="preference" class="form-control" name="preference" maxlength="1" size="3">
+        <input type="text" id="preference" class="form-control" name="preference" maxlength="1" size="3" min="1" max ="3">
         <label for="source" class="form-label mt-1">Source:</label>
         <input type="text" id="source" class="form-control" name="source" maxlength="9" size="7">
 

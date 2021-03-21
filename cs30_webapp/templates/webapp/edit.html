@@ -49,22 +49,24 @@ EditDB - {{ entry.ref_num  }}
       </tr>
 
       <tr>
-        <td><input type="number" id="ref_num" name="ref_num" class="form-control" maxlength="5" size="4" value={{ entry.ref_num }}></td>
+        <td><input type="number" id="ref_num" name="ref_num" class="form-control" maxlength="5" size="4" min="1" max="99999" value={{ entry.ref_num }} disabled></td>
         <td>
           <select id="scope" name="scope" class="form-control" value={{ entry.navigation_info.scope }}>
             <option value="Scope 1">Scope 1</option>
             <option value="Scope 2">Scope 2</option>
+            <option value="Scope 3">Scope 3</option>
+            <option value="Outside of Scopes">Outside of Scopes</option>
           </select
         </td>
-        <td><input type="text" id="level1" name="level1" class="form-control" maxlength="30" size="10" value="{{ entry.navigation_info.level1 }}"></td>
-        <td><input type="text" id="level2" name="level2" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level2 }}"></td>
-        <td><input type="text" id="level3" name="level3" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level3 }}"></td>
-        <td><input type="text" id="level4" name="level4" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level4 }}"></td>
-        <td><input type="text" id="level5" name="level5" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level5 }}"></td>
-        <td><input type="text" id="ef" name="ef" class="form-control" maxlength="30" size="10" value="{{ entry.calculation_info.ef }}"></td>
+        <td><input type="text" id="level1" name="level1" class="form-control" maxlength="30" size="10" value="{{ entry.navigation_info.level1 }}" disabled></td>
+        <td><input type="text" id="level2" name="level2" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level2 }}" disabled></td>
+        <td><input type="text" id="level3" name="level3" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level3 }}" disabled></td>
+        <td><input type="text" id="level4" name="level4" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level4 }}" disabled></td>
+        <td><input type="text" id="level5" name="level5" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level5 }}" disabled></td>
+        <td><input type="text" id="ef" name="ef" class="form-control" maxlength="30" size="10" max="99999" min="0.000001" value="{{ entry.calculation_info.ef }}"></td>
         <td><input type="text" id="cu" name="cu" class="form-control" maxlength="30" size="6" value="{{ entry.calculation_info.cu }}"></td>
-        <td><input type="text" id="last_update" class="form-control" name="last_update" size="10" value={{ entry.other_info.last_update|date:"d/m/Y - g:i:s" }} readonly></td>
-        <td><input type="text" id="preference" class="form-control" name="preference" maxlength="1" size="3" value="{{ entry.other_info.preference }}"></td>
+        <td><input type="text" id="last_update" class="form-control" name="last_update" size="10" value={{ entry.other_info.last_update|date:"d/m/Y - g:i:s" }} disabled></td>
+        <td><input type="text" id="preference" class="form-control" name="preference" maxlength="1" size="3" min="1" max ="3" value="{{ entry.other_info.preference }}"></td>
         <td><input type="text" id="source" class="form-control" name="source" maxlength="9" size="7" value="{{ entry.other_info.source }}"></td>
         <td>
             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}">
@@ -80,11 +82,10 @@ EditDB - {{ entry.ref_num  }}
     <p>
       Last updated will automatically update upon saving.
     </p>
+    {% for message in messages %}
+      {{ message }}
+    {% endfor %}
   </div>
-
-  {% for message in messages %}
-    {{ message }}
-  {% endfor %}
 
   <div class="row justify-content-center mt-5">
     <div class="col-1 site-colour-light py-2 px-3 rounded site-text-dark text-center">

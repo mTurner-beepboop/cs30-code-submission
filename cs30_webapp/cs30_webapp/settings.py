@@ -32,6 +32,12 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8000',
 )
 
+
+# SECURE_SSL_REDIRECT = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
@@ -41,7 +47,7 @@ SECRET_KEY = ')xz@t@d8gc3s1uw!#zsb9^9#198@3f!0a4n)c)%o9aqo^*$k30'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = ['.herokuapp.com', '0.0.0.0', '127.0.0.1']
 
 
 # Application definition
