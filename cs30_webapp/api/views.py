@@ -31,11 +31,22 @@ def entry_list(request):
         entry_data = request.data
         if 'payload' in entry_data.keys():
             entry_data = json.loads(entry_data['payload'])
-
+        
+        #Check if ref num in db, if so, reject, else, serializers
+        refNum = entry_data['ref_num']
+        print(refNum)
+        try:
+            e = FlatfileEntry.objects.get(pk=refNum)
+            print(e)
+            if e != None:
+                return JsonResponse({}, status=status.HTTP_409_CONFLICT)
+        except:
+            pass
+            
         api_serializer = ApiSerializer(data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
-            return JsonResponse(status=status.HTTP_201_CREATED)
+            return JsonResponse({}, status=status.HTTP_201_CREATED)
         return JsonResponse(api_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE': #Delete all entries - likely not needed in final implementation
         '''
@@ -56,9 +67,9 @@ def entry_detail(request, pk):
     try:
         entry = FlatfileEntry.objects.get(pk=pk)
     except entry.DoesNotExist:
-        return JsonResponse(status=status.HTTP_404_NOT_FOUND)
+        return JsonResponse({}, status=status.HTTP_404_NOT_FOUND)
     except:
-        return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+        return JsonResponse({}, status=status.HTTP_400_BAD_REQUEST)
 
     #GET / PUT / DELETE entry
     if request.method == 'GET': #Gets entry by specified id
@@ -76,14 +87,14 @@ def entry_detail(request, pk):
         api_serializer = ApiSerializer(entry, data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()
-            return JsonResponse(status=status.HTTP_200_OK)
+            return JsonResponse({}, status=status.HTTP_200_OK)
         return JsonResponse(api_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE': #Deletes entry by id
         '''
         NOTE: this is a security issue - the is no restriction on who can send this delete request
         '''
         entry.delete()
-        return JsonResponse(status=status.HTTP_200_OK)
+        return JsonResponse({}, status=status.HTTP_200_OK)
 
 @api_view(['GET','POST'])
 def categories(request):
@@ -144,9 +155,9 @@ def item_calc(request):
         try:
             entry = FlatfileEntry.objects.filter(pk=request.data['id'])[0]
         except entry.DoesNotExist:
-            return JsonResponse(status=status.HTTP_404_NOT_FOUND)
+            return JsonResponse({}, status=status.HTTP_404_NOT_FOUND)
         except:
-            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({}, status=status.HTTP_400_BAD_REQUEST)
 
         #Collect the right information
         source = entry.other_info.source
@@ -157,6 +168,6 @@ def item_calc(request):
         try:
             total = factor * request.data['amount']
         except:
-            return JsonResponse(status=status.HTTP_400_BAD_REQUEST)
+            return JsonResponse({}, status=status.HTTP_400_BAD_REQUEST)
 
         return JsonResponse({"total":total, "calc_unit":unit, "source":source}, status=status.HTTP_200_OK)

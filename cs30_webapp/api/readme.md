@@ -47,7 +47,7 @@ The API will return the requested entry in flatfile entry form with status 200 o
 
 To add a new entry to the flatfile database:
 Send POST request of flatfile form to <host>/api/carbon
-This will return a HTTP response - either 201 if successful, or 400 if request was malformed
+This will return a HTTP response - either 201 if successful, or 400 if request was malformed, or 409 if an entry with the specified ref_num already exists
 
 To delete all entries from the database (this is just a development tool, will likely be removed):
 Send DELETE request to <host>/api/carbon
