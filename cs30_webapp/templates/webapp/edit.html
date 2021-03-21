@@ -22,76 +22,98 @@ EditDB - {{ entry.ref_num  }}
   {% endfor %}
 </ul>
 
-<div class="mt-4" style='display: grid; text-align: center; background-color: #E5EEE9'>
+<form id="edit_form" method="post" action="{% url 'webapp:edit' entry.ref_num  %}" enctype="multipart/form-data">
+  {% csrf_token %}
+  <div class="mt-4" style='display: grid; text-align: center; background-color: #E5EEE9'>
 
-  <h3> {{ entry.ref_num  }} </h3>
+    <h3> {{ entry.ref_num  }} </h3>
+
+    {{ edit_form.errors }}
+
+    <table>
+      <tr>
+
+        <th>Reference</th>
+        <th>Scope</th>
+        <th>Level 1</th>
+        <th>Level 2</th>
+        <th>Level 3</th>
+        <th>Level 4</th>
+        <th>Level 5</th>
+        <th>EF</th>
+        <th>CU</th>
+        <th>Last updated</th>
+        <th>Preference</th>
+        <th>Source</th>
+
+      </tr>
+
+      <tr>
+        <td><input type="number" id="ref_num" name="ref_num" class="form-control" maxlength="5" size="4" value={{ entry.ref_num }}></td>
+        <td>
+          <select id="scope" name="scope" class="form-control" value={{ entry.navigation_info.scope }}>
+            <option value="Scope 1">Scope 1</option>
+            <option value="Scope 2">Scope 2</option>
+          </select
+        </td>
+        <td><input type="text" id="level1" name="level1" class="form-control" maxlength="30" size="10" value="{{ entry.navigation_info.level1 }}"></td>
+        <td><input type="text" id="level2" name="level2" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level2 }}"></td>
+        <td><input type="text" id="level3" name="level3" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level3 }}"></td>
+        <td><input type="text" id="level4" name="level4" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level4 }}"></td>
+        <td><input type="text" id="level5" name="level5" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level5 }}"></td>
+        <td><input type="text" id="ef" name="ef" class="form-control" maxlength="30" size="10" value="{{ entry.calculation_info.ef }}"></td>
+        <td><input type="text" id="cu" name="cu" class="form-control" maxlength="30" size="6" value="{{ entry.calculation_info.cu }}"></td>
+        <td><input type="text" id="last_update" class="form-control" name="last_update" size="10" value={{ entry.other_info.last_update|date:"d/m/Y - g:i:s" }} readonly></td>
+        <td><input type="text" id="preference" class="form-control" name="preference" maxlength="1" size="3" value="{{ entry.other_info.preference }}"></td>
+        <td><input type="text" id="source" class="form-control" name="source" maxlength="9" size="7" value="{{ entry.other_info.source }}"></td>
+        <td>
+            <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}">
+              Del
+            </button>
+        </td>
+      </tr>
+    </table>
+
+  </div>
+
+  <div class="mt-3 mx-3">
+    <p>
+      Last updated will automatically update upon saving.
+    </p>
+  </div>
+
+  {% for message in messages %}
+    {{ message }}
+  {% endfor %}
+
+  <div class="row justify-content-center mt-5">
+    <div class="col-1 site-colour-light py-2 px-3 rounded site-text-dark text-center">
+      <button type="submit" class="btn btn-primary" type="submit"><i class="bi bi-save2-fill"></i> Save </button>
+    </div>
+  </div>
+</form>
 
 
-  <table>
-    <tr>
 
-      <th>Reference</th>
-      <th>Scope</th>
-      <th>Level 1</th>
-      <th>Level 2</th>
-      <th>Level 3</th>
-      <th>Level 4</th>
-      <th>Level 5</th>
-      <th>EF</th>
-      <th>CU</th>
-      <th>Last updated</th>
-      <th>Preference</th>
-      <th>Source</th>
-
-    </tr>
-
-    <tr>
-      <td><input type="text" id="ref_num" name="ref_num" maxlength="9" size="4" value={{ entry.ref_num  }}></td>
-      <td><input type="text" id="scope" name="scope" maxlength="9" size="4" value={{ entry.navigation_info.scope  }}></td>
-      <td><input type="text" id="level1" name="level1" maxlength="16" size="10" value={{ entry.navigation_info.level1  }}></td>
-      <td><input type="text" id="level2" name="level2" maxlength="16" size="10" value={{ entry.navigation_info.level2  }}></td>
-      <td><input type="text" id="level3" name="level3" maxlength="16" size="10" value={{ entry.navigation_info.level3  }}></td>
-      <td><input type="text" id="level4" name="level4" maxlength="16" size="10" value={{ entry.navigation_info.level4  }}></td>
-      <td><input type="text" id="level5" name="level5" maxlength="16" size="10" value={{ entry.navigation_info.level5  }}></td>
-      <td><input type="text" id="ef" name="ef" maxlength="16" size="10" value={{ entry.calculation_info.ef  }}></td>
-      <td><input type="text" id="cu" name="cu" maxlength="16" size="6" value={{ entry.calculation_info.cu  }}></td>
-      <td><input type="text" id="last_update" name="last_update" size="10" value={{ entry.other_info.last_update|date:"d/m/Y - g:i:s" }} readonly></td>
-      <td><input type="text" id="preference" name="preference" maxlength="1" size="3" value={{ entry.other_info.preference }}></td>
-      <td><input type="text" id="source" name="source" maxlength="9" size="7" value={{ entry.other_info.source  }}></td>
-      <td>
-          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}">
-            Del
-          </button>
-          <!-- Modal for delete button to reduce/prevent accidental deletions.-->
-          <div class="modal fade" id="id{{ entry.ref_num  }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="staticBackdropLabel">Are you sure?</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                  Deleting this entry, {{ entry.ref_num }}, will remove it permanently.
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-success" data-bs-dismiss="modal">No thanks.</button>
-                  <form id="delete" method="post" action="{% url 'webapp:delete' entry.ref_num %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-danger">Yes, I'm sure!</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-      </td>
-    </tr>
-
-  </table>
-</div>
-
-<div class="row justify-content-center mt-5">
-  <div class="col-1 site-colour-light py-2 px-3 rounded site-text-dark text-center">
-    <a type="button" class="btn btn-primary" href=""> <i class="bi bi-save2-fill"></i> Save </a>
+<!-- Modal for delete button to reduce/prevent accidental deletions.-->
+<div class="modal fade" id="id{{ entry.ref_num  }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Are you sure?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Deleting this entry, {{ entry.ref_num }}, will remove it permanently.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-success" data-bs-dismiss="modal">No thanks.</button>
+        <form id="delete" method="post" action="{% url 'webapp:delete' entry.ref_num %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">Yes, I'm sure!</button>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

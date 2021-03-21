@@ -31,10 +31,10 @@ Home
             <a class="btn button-menu" href="{% url 'webapp:dbview' %}">Viewdb</a>
             <a class="btn button-menu" href="{% url 'webapp:add' %}">Upload</a>
             <a class="btn button-menu" href="{% url 'webapp:logout' %}">Logout</a>
-            
+
           {% else %}
-              <a class="btn button-menu" href="{% url 'webapp:register' %}">Register</a>
               <a class="btn button-menu" href="{% url 'webapp:login' %}">Login</a>
+              <a class="btn button-menu" href="{% url 'webapp:register' %}">Register</a>
 
           {% endif %}
         </div>

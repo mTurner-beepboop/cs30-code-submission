@@ -38,18 +38,18 @@ DBView
 
     {% for entry in entries %}
     <tr>
-      <td>{{ entry.ref_num  }}</td>
-      <td>{{ entry.navigation_info.scope  }}</td>
-      <td>{{ entry.navigation_info.level1  }}</td>
-      <td>{{ entry.navigation_info.level2  }}</td>
-      <td>{{ entry.navigation_info.level3  }}</td>
-      <td>{{ entry.navigation_info.level4  }}</td>
-      <td>{{ entry.navigation_info.level5  }}</td>
-      <td>{{ entry.calculation_info.ef  }}</td>
-      <td>{{ entry.calculation_info.cu  }}</td>
+      <td>{{ entry.ref_num }}</td>
+      <td>{{ entry.navigation_info.scope }}</td>
+      <td>{{ entry.navigation_info.level1 }}</td>
+      <td>{{ entry.navigation_info.level2 }}</td>
+      <td>{{ entry.navigation_info.level3 }}</td>
+      <td>{{ entry.navigation_info.level4 }}</td>
+      <td>{{ entry.navigation_info.level5 }}</td>
+      <td>{{ entry.calculation_info.ef }}</td>
+      <td>{{ entry.calculation_info.cu }}</td>
       <td>{{ entry.other_info.last_update|date:"d/m/Y - g:i:s" }}</td>
       <td>{{ entry.other_info.preference }}</td>
-      <td>{{ entry.other_info.source  }}</td>
+      <td>{{ entry.other_info.source }}</td>
       <td><a type="button" class="btn btn-warning btn-sm" href="{% url 'webapp:edit' entry.ref_num  %}"> Edit </a></td>
       <td>
           <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}">

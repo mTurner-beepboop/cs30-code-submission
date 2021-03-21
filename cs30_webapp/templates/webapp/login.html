@@ -24,7 +24,7 @@ Login
       </div>
 
       <label for="password" class="form-label mt-1">Password:</label>
-      <input type="password" name="password" id="password" class="form-control" aria-describedby="password" required autofocus>
+      <input type="password" name="password" id="password" class="form-control" aria-describedby="password" required>
       <div id="password" class="form-text">
         <!--This space is for help comments eg "Usernames must contain uppercase letter" etc -->
       </div>
@@ -32,7 +32,7 @@ Login
       <div>
 
         {% for message in messages %}
-        {{ message }}
+          {{ message }}
         {% endfor %}
 
       </div>

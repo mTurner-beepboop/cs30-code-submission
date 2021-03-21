@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from webapp.forms import UserForm, UploadFlatFileForm
+from webapp.forms import UserForm, UploadFlatFileForm, EditForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -19,7 +19,46 @@ def home(request):
 def edit(request, refnum):
     entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + refnum).json()
     entry['other_info']['last_update'] = datetime.datetime.strptime(entry['other_info']['last_update'],'%Y-%m-%dT%H:%M:%SZ')
-    return render(request, 'webapp/edit.html', {'entry':entry})
+
+    if request.method == 'POST':
+        edit_form = EditForm(request.POST)
+        if edit_form.is_valid():
+            messages.success(request, 'Edit successful!')
+
+            edit = {
+                        'ref_num':int(request.POST.get('ref_num')),
+                        'navigation_info':{
+                            'scope':request.POST.get('scope'),
+                            'level1':request.POST.get('level1'),
+                            'level2':request.POST.get('level2'),
+                            'level3':request.POST.get('level3'),
+                            'level4':request.POST.get('level4'),
+                            'level5':request.POST.get('level5')
+                            },
+                        'calculation_info':{
+                            'ef':float(request.POST.get('ef')),
+                            'cu':request.POST.get('cu')
+                            },
+                        'other_info':{
+                            'last_update':(datetime.datetime.now(tz=None)).__str__(),
+                            'preference':int(request.POST.get('preference')),
+                            'source':request.POST.get('source')
+                            }
+
+                    }
+
+            print(entry)
+
+            test = requests.put('http://cs30.herokuapp.com/api/carbon/' + refnum, json=edit)
+            print(test)
+
+            return render(request, 'webapp/edit.html', context={'edit_form': edit_form,'entry':entry})
+
+        else:
+            messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
+    else:
+        edit_form = EditForm()
+    return render(request, 'webapp/edit.html', context={'edit_form': edit_form,'entry':entry})
 
 
 @login_required
@@ -44,7 +83,7 @@ def delete(request, refnum):
     if request.method == 'POST':
         requests.delete('http://cs30.herokuapp.com/api/carbon/' + refnum)
         return redirect(reverse('webapp:dbview'))
-    return render(request, 'webapp/dbview.html', {'entries': entries})
+    return render(request, 'webapp/dbview.html', context = {'entries': entries})
 
 
 import datetime
@@ -56,7 +95,7 @@ def dbview(request):
 
     for entry in entries:
         entry['other_info']['last_update'] = datetime.datetime.strptime(entry['other_info']['last_update'],'%Y-%m-%dT%H:%M:%SZ')
-    return render(request, 'webapp/dbview.html', {'entries': entries})
+    return render(request, 'webapp/dbview.html', context = {'entries': entries})
 
 
 def register(request):
