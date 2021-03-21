@@ -18,7 +18,7 @@ def home(request):
 @login_required
 def edit(request, refnum):
     entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + refnum).json()
-    for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M.%SZ', '%Y-%m-%d %H:%M:%S'):
+    for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
         try:
             entry['other_info']['last_update'] = datetime.datetime.strptime(str(entry['other_info']['last_update']), format)
         except ValueError:
@@ -149,11 +149,14 @@ def dbview(request):
     entries = requests.get('http://cs30.herokuapp.com/api/carbon').json()
 
     for entry in entries:
-        for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M.%SZ', '%Y-%m-%d %H:%M:%S'):
+
+        for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
+
             try:
                 entry['other_info']['last_update'] = datetime.datetime.strptime(str(entry['other_info']['last_update']), format)
             except ValueError:
                 pass
+
     return render(request, 'webapp/dbview.html', context = {'entries': entries})
 
 
