@@ -17,49 +17,68 @@ Upload
 
 {% block body_block %}
 
-
-
 <div class="row justify-content-center">
   <div class="col-4 site-colour-light pt-5 px-5 pb-2 rounded site-text-dark">
 
 
-    <!-- Horrendous <p> as palceholder for now until formset is completed. -->
-    <h3> WIP - Not representative of final result.</h3>
-    <p> Id : <input type="text" placeholder="1234"><br/>
-    scope : <input type="text" placeholder="Scope 2"><br/>
-    Level1: <input type="text" placeholder="Food"><br/>
-    Level: <input type="text" placeholder="Egg"><br/>
-    ...<br/>
-    Source: <input type="text" placeholder="www.websitename.com"><br/><br/>
-    <a type="button" class="btn btn-warning"> Save Entry </a> <br/>
-    OR<br/>
-    </p>
-    <a type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#idUpload"> Upload File </a>
+    <form id="login_form" method="post" action=".">
+      {% csrf_token %}
 
+      <div>
+
+        <label for="level1" class="form-label mt-1">Level 1:</label>
+        <input type="text" id="level1" name="level1" class="form-control" maxlength="30" size="10">
+        <label for="level2" class="form-label mt-1">level 2:</label>
+        <input type="text" id="level2" name="level2" maxlength="30" class="form-control" size="10">
+        <label for="level3" class="form-label mt-1">level 3:</label>
+        <input type="text" id="level3" name="level3" maxlength="30" class="form-control" size="10">
+        <label for="level4" class="form-label mt-1">level 4:</label>
+        <input type="text" id="level4" name="level4" maxlength="30" class="form-control" size="10">
+        <label for="level5" class="form-label mt-1">level 5:</label>
+        <input type="text" id="level5" name="level5" maxlength="30" class="form-control" size="10">
+        <label for="ef" class="form-label mt-1">EF:</label>
+        <input type="text" id="ef" name="ef" class="form-control" maxlength="30" size="10">
+        <label for="cu" class="form-label mt-1">CU:</label>
+        <input type="text" id="cu" name="cu" class="form-control" maxlength="30" size="6">
+        <label for="last_update" class="form-label mt-1">Last Update:</label>
+        <input type="text" id="last_update" class="form-control" name="last_update" size="10">
+        <label for="preference" class="form-label mt-1">Preference:</label>
+        <input type="text" id="preference" class="form-control" name="preference" maxlength="1" size="3">
+        <label for="source" class="form-label mt-1">Source:</label>
+        <input type="text" id="source" class="form-control" name="source" maxlength="9" size="7">
+
+      </div>
+
+
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+
+      <button type="submit" class="btn btn-primary" type="submit"><i class="bi bi-save2-fill"></i> Save </button>
+      <a type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#idUpload"> Upload File </a>
+
+    </form>
   </div>
 </div>
 
-<!-- Modal for save button to allow users to upload a flat file.-->
+
+    <!-- Modal for save button to allow users to upload a flat file.-->
 <div class="modal fade" id="idUpload" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-top">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">Flatfile Upload</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        {% csrf_token %}
-        {% for field in file_form %}
-        {{ field }}
-        {% endfor %}
-      </div>
-      <div class="modal-footer">
-        <form id="file_form" method="post" action="{% url 'webapp:home' %}" enctype="multipart/form-data">
-          <button type="submit" class="btn btn-primary">Upload File</button>
-      </form>
+        <div class="input-group">
+          <input type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+          <form id="file_form" method="post" action="{% url 'webapp:home' %}" enctype="multipart/form-data">
+            <button type="submit" class="btn btn-primary" id="inputGroupFileAddon04">Upload File</button>
+          </form>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
 {% endblock %}
