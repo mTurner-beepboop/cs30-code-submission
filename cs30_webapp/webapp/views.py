@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from webapp.forms import UserForm, UploadFlatFileForm, EditForm, UploadForm
+from webapp.forms import UserForm, EditForm, UploadForm
 from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
@@ -30,7 +30,7 @@ def edit(request, refnum):
 
             edit = {
                         'ref_num':refnum,
-                        # While lvels cannot be edited currently, I'm leaving this in as an example.
+                        # While levels cannot be edited currently, I'm leaving this in as an example.
                         'navigation_info':{
                             'scope':request.POST.get('scope'),
                             'level1':request.POST.get('level1'),
@@ -50,85 +50,106 @@ def edit(request, refnum):
                             }
                     }
 
+                    #onClick="window.location.reload()"
             try_edit = requests.put('http://cs30.herokuapp.com/api/carbon/' + refnum, json=edit)
 
-            if(try_edit == '200'):
-                messages.success(request, 'Edit successful!')
-                return render(request, 'webapp/edit.html', context={'edit_form': edit_form,'entry':entry})
-            else:
-                messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
-                return render(request, 'webapp/edit.html', context={'edit_form': edit_form,'entry':entry})
-
+            messages.success(request, 'Edit successful!')
+            return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
 
         else:
             messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
+            return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
     else:
         edit_form = EditForm()
+
     return render(request, 'webapp/edit.html', context={'edit_form': edit_form,'entry':entry})
 
+
+
+from openpyxl import load_workbook
 
 @login_required
 def add(request):
 
     if request.method == 'POST':
-        upload_form = UploadForm(request.POST)
-        if upload_form.is_valid():
 
-            refnum = request.POST.get('ref_num')
-            upload = {
-                        'ref_num':int(refnum),
-                        'navigation_info':{
-                            'scope':request.POST.get('scope'),
-                            'level1':request.POST.get('level1'),
-                            'level2':request.POST.get('level2'),
-                            'level3':request.POST.get('level3'),
-                            'level4':request.POST.get('level4'),
-                            'level5':request.POST.get('level5')
-                            },
-                        'calculation_info':{
-                            'ef':float(request.POST.get('ef')),
-                            'cu':request.POST.get('cu')
-                            },
-                        'other_info':{
-                            'last_update':(datetime.datetime.now(tz=None)).__str__(),
-                            'preference':int(request.POST.get('preference')),
-                            'source':request.POST.get('source')
-                            }
-                    }
+        if 'upload' in request.POST:
+            upload_form = UploadForm()
+            test = str(request.FILES['uploadfile'])
+            wb = load_workbook(request.FILES['uploadfile'])
+            ws = wb.active
 
-            for key, value in upload['navigation_info'].items():
-                if value == '':
-                    upload['navigation_info'][key] = None
+            for idx, row in enumerate(ws.iter_rows()):
+                if idx == 0 or idx == 1:
+                    continue
+                else:
+                    if ws.cell(row = idx, column = 1).value == None:
+                        break
+                    else:
+                        edit = {
+                                    'ref_num':ws.cell(row = idx+1, column = 1).value,
+                                    'navigation_info':{
+                                        'scope':ws.cell(row = idx+1, column = 2).value,
+                                        'level1':ws.cell(row = idx+1, column = 3).value,
+                                        'level2':ws.cell(row = idx+1, column = 4).value,
+                                        'level3':ws.cell(row = idx+1, column = 5).value,
+                                        'level4':ws.cell(row = idx+1, column = 6).value,
+                                        'level5':ws.cell(row = idx+1, column = 7).value
+                                        },
+                                    'calculation_info':{
+                                        'ef':ws.cell(row = idx+1, column = 10).value,
+                                        'cu':ws.cell(row = idx+1, column = 9).value
+                                        },
+                                    'other_info':{
+                                        'last_update':(ws.cell(row = idx+1, column = 12).value).__str__(),
+                                        'preference':ws.cell(row = idx+1, column = 11).value,
+                                        'source':ws.cell(row = idx+1, column = 8).value
+                                        }
+                                }
+                        try_upload = requests.post('https://cs30.herokuapp.com/api/carbon', json=edit)
 
-            try_upload = requests.post('https://cs30.herokuapp.com/api/carbon', json=upload)
-            print(upload)
-            print(try_upload)
+            messages.success(request, 'Upload successful!')
+            return render(request, 'webapp/add.html', context={'upload_form': upload_form})
 
-            if(try_upload == '201'):
+        elif 'save' in request.POST:
+            upload_form = UploadForm(request.POST)
+            if upload_form.is_valid():
+                refnum = request.POST.get('ref_num')
+                upload = {
+                            'ref_num':int(refnum),
+                            'navigation_info':{
+                                'scope':request.POST.get('scope'),
+                                'level1':request.POST.get('Level1'),
+                                'level2':request.POST.get('Level2'),
+                                'level3':request.POST.get('Level3'),
+                                'level4':request.POST.get('Level4'),
+                                'level5':request.POST.get('Level5')
+                                },
+                            'calculation_info':{
+                                'ef':float(request.POST.get('ef')),
+                                'cu':request.POST.get('cu')
+                                },
+                            'other_info':{
+                                'last_update':(datetime.datetime.now(tz=None)).__str__(),
+                                'preference':int(request.POST.get('preference')),
+                                'source':request.POST.get('source')
+                                }
+                        }
+
+                for key, value in upload['navigation_info'].items():
+                    if value == '':
+                        upload['navigation_info'][key] = None
+
+                try_upload = requests.post('https://cs30.herokuapp.com/api/carbon', json=upload)
+
                 messages.success(request, 'Upload successful!')
                 return render(request, 'webapp/add.html', context={'upload_form': upload_form})
-            else:
-                messages.error(request, 'Upload unsuccessful, please check values are valid and try again.')
-                return render(request, 'webapp/add.html', context={'upload_form': upload_form})
 
-        else:
-            messages.error(request, 'Ppload unsuccessful, please check uploads are valid and try again.')
+            else:
+                messages.error(request, 'Upload unsuccessful, please check inputs are valid and try again.')
+
     else:
         upload_form = UploadForm()
-
-    # if request.method == 'POST':
-    #     file_form = UploadFlatFileForm(request.POST, request.FILES)
-    #
-    #     if file_form.is_valid():
-    #         #do nothing for Now
-    #         #Should check if upload successful then display one of these messages.
-    #         messages.success(request, 'Upload successful!')
-    #         messages.error(request, 'Upload unsuccessful, please check file format/filetype and try again.')
-    #         return redirect(reverse('webapp:add'))
-    # else:
-    #     file_form = UploadFlatFileForm()
-
-
 
     return render(request, 'webapp/add.html', context={'upload_form': upload_form})
 

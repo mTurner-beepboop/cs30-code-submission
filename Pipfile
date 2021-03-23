@@ -16,6 +16,8 @@ django-cors-headers = "*"
 requests = "*"
 gunicorn = "*"
 whitenoise = "*"
+openpyxl = "*"
+
 
 [dev-packages]
 

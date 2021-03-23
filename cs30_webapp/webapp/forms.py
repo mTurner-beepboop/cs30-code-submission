@@ -23,14 +23,14 @@ class UserForm(forms.ModelForm):
 #Examin if the constraints here are correct, and ensure they are also correct in edit.html
 class EditForm(forms.Form):
     scope = forms.ChoiceField(choices = SCOPE_CHOICES)
-    level1 = forms.CharField(max_length = 30, min_length = 1)
+    level1 = forms.CharField(max_length = 30, min_length = 1, required=False)
     level2 = forms.CharField(max_length = 30, min_length = 1, required=False)
     level3 = forms.CharField(max_length = 30, min_length = 1, required=False)
     level4 = forms.CharField(max_length = 30, min_length = 1, required=False)
     level5 = forms.CharField(max_length = 30, min_length = 1, required=False)
     ef = forms.FloatField(max_value = 99999, min_value = 0.000001)
     cu = forms.CharField(max_length = 30)
-    preference =  forms.IntegerField(min_value = 0, max_value=3)
+    preference =  forms.IntegerField(min_value = 0, max_value=2)
     source = forms.CharField(max_length = 30)
 
 class UploadForm(forms.Form):
@@ -43,8 +43,5 @@ class UploadForm(forms.Form):
     level5 = forms.CharField(max_length = 30, min_length = 1, required=False)
     ef = forms.FloatField(max_value = 99999, min_value = 0)
     cu = forms.CharField(max_length = 30)
-    preference =  forms.IntegerField(min_value = 0, max_value=3)
+    preference =  forms.IntegerField(min_value = 0, max_value=2)
     source = forms.CharField(max_length = 30)
-
-class UploadFlatFileForm(forms.Form):
-    title = forms.forms.FileField()

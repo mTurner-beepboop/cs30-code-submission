@@ -16,13 +16,14 @@ EditDB - {{ entry.ref_num  }}
 {% endblock %}
 
 {% block body_block %}
-<ul>
-  {% for entry in entries %}
-  <li>{{ entry.ref_num }}</li>
-  {% endfor %}
-</ul>
 
-<form id="edit_form" method="post" action="{% url 'webapp:edit' entry.ref_num  %}" enctype="multipart/form-data">
+<div class="row justify-content-end mb-2 sticky-top">
+  <div class="col-md-auto site-colour-light py-2 px-2 rounded ">
+    <a type="button" class="btn btn-primary" href="{% url 'webapp:add' %}"> Upload </a>
+  </div>
+</div>
+
+<form id="edit_form" method="post" action="{% url 'webapp:edit' entry.ref_num  %}">
   {% csrf_token %}
   <div class="mt-4" style='display: grid; text-align: center; background-color: #E5EEE9'>
 
@@ -66,7 +67,7 @@ EditDB - {{ entry.ref_num  }}
         <td><input type="text" id="ef" name="ef" class="form-control" maxlength="30" size="10" max="99999" min="0.000001" value="{{ entry.calculation_info.ef }}"></td>
         <td><input type="text" id="cu" name="cu" class="form-control" maxlength="30" size="6" value="{{ entry.calculation_info.cu }}"></td>
         <td><input type="text" id="last_update" class="form-control" name="last_update" size="10" value={{ entry.other_info.last_update|date:"d/m/Y - g:i:s" }} disabled></td>
-        <td><input type="text" id="preference" class="form-control" name="preference" maxlength="1" size="3" min="1" max ="3" value="{{ entry.other_info.preference }}"></td>
+        <td><input type="text" id="preference" class="form-control" name="preference" maxlength="1" size="3" min="1" max ="2" value="{{ entry.other_info.preference }}"></td>
         <td><input type="text" id="source" class="form-control" name="source" maxlength="9" size="7" value="{{ entry.other_info.source }}"></td>
         <td>
             <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}">

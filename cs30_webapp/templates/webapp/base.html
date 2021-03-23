@@ -43,10 +43,11 @@
         </div>
         <div class="modal-body">
           <p>
-			This is the database management system for the carbon footprint calculation and visualisation suite made in collaboration with Team 29 and 30. On this end we expect you to access the data directly, to update any data that's outdated, add new data and remove old. This webapp also contains the API used on Team 29's end to connect securely to the database which is currently hosted on mongodb's ATLAS cloud service while the app is being developed, we expect that you will want to change this, maybe to run on your own servers, so we have indicated code that will need to be changed. 
+			         This is the database management system for the carbon footprint calculation and visualisation suite made in collaboration with Team 29 and 30. On this end we expect you to access the data directly, to update any data that's outdated, add new data and remove old. This webapp also contains the API used on Team 29's end to connect securely to the database which is currently hosted on mongodb's ATLAS cloud service while the app is being developed, we expect that you will want to change this, maybe to run on your own servers, so we have indicated code that will need to be changed.
           </p>
-		  <p>
-			Information on how to use the API can be found in the API readme.md, or <a href="{% url 'api:home' %}">here</a> at the API endpoint homepage.
+		      <p>
+			         Information on how to use the API can be found in the API readme.md, or <a href="{% url 'api:home' %}">here</a> at the API endpoint homepage.
+          </p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-success" data-bs-dismiss="modal"> Ok, thanks! </button>
@@ -55,13 +56,14 @@
     </div>
   </div>
 
-  <div class="col d-flex justify-content-end mt-3 ">
-    <form>
-      <div class="row mx-2">
-        <input class="form-control col" type="search" id="search" placeholder="e.g. 1111" aria-label="search">
-        <button class="btn btn-success col " type="submit" > Search </button>
-      </div>
-    </form>
+  <div class="col d-flex justify-content-end mt-3 mb-3">
+        <form class="d-flex" action="edit/">
+          <input class="form-control" type="search" id="search" placeholder="e.g. 1111" aria-label="search">
+          <button id="dosearch" class="btn btn-success col" type="submit"> Search </button>
+        </form>
+        <form class="d-flex">
+          <button class="btn btn-danger mx-2" type="submit" href="{% url 'webapp:logout' %}" > Logout </button>
+        </form>
   </div>
 
   {% endif %}
