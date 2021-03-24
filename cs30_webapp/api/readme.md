@@ -61,6 +61,10 @@ To delete single entry from database:
 Send DELETE request to <host>/api/carbon/<ref_num>
 If a row was found and successfully deleted, it will return a 200 status code, if not found, a 404
 
+To search by keyword from database:
+Sent GET request to <host>/api/carbon/search/<search_term>
+The API will return a list of entries along with 200 status code if successful, or a 400 if there was some error
+
 
 
 ---ETERNAL---

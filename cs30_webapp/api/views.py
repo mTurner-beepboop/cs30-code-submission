@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http.response import JsonResponse
 from django.http import HttpRequest
+from django.db.models import Q
 from rest_framework.parsers import JSONParser
 from rest_framework import status, generics, filters
 from rest_framework.decorators import api_view
@@ -22,7 +23,25 @@ class SearchAPIView(generics.ListAPIView):
                         'other_info__preference', 'other_info__source'
                     ]
 
-
+@api_view(['GET'])
+def search(request, query):
+    if request.method == 'GET':
+        queryString = query
+        try:   
+            #Int has been passed, check ref_num - NOTE: some issue with search, so an integer search does not function currently
+            queryInt = int(queryString)
+            entries = FlatfileEntry.objects.filter(Q(ref_num__icontains=queryInt))
+            api_serializer = ApiSerializer(entries, many=True)
+            return JsonResponse(api_serializer.data, safe=False, status=status.HTTP_200_OK)
+        except ValueError:
+            #Non int, check text fields
+            entries = FlatfileEntry.objects.filter(Q(navigation_info__scope__icontains=queryString) | Q(navigation_info__level1__icontains=queryString) | Q(navigation_info__level2__icontains=queryString) | Q(navigation_info__level3__icontains=queryString) | Q(navigation_info__level4__icontains=queryString) | Q(navigation_info__level5__icontains=queryString) | Q(calculation_info__cu__icontains=queryString) | Q(other_info__source__icontains=queryString))
+            api_serializer = ApiSerializer(entries, many=True)
+            return JsonResponse(api_serializer.data, safe=False, status=status.HTTP_200_OK)
+        except:
+            return JsonResponse({}, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return JSONResponse({}, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','POST','DELETE'])
 def entry_list(request):
