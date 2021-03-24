@@ -6,9 +6,9 @@ Upload
 {% endblock %}
 
 {% block navblock %}
-<li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
-<li class="breadcrumb-item"><a href="{% url 'webapp:dbview' %}">DBView</a></li>
-<li class="breadcrumb-item active" aria-current="page">Upload</li>
+  <li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
+  <li class="breadcrumb-item"><a href="{% url 'webapp:dbview' %}">DBView</a></li>
+  <li class="breadcrumb-item active" aria-current="page">Upload</li>
 {% endblock %}
 
 {% block body_block %}
@@ -50,13 +50,15 @@ Upload
         <input type="text" id="source" class="form-control" name="source" maxlength="9" size="7" placeholder="BEIS, 2017" required>
 
       </div>
-      {{ upload_form.errors }}
+      <div class="mt-2">
+        {{ upload_form.errors }}
 
-      {{ file_form.errors }}
+        {{ file_form.errors }}
 
-      {% for message in messages %}
-        {{ message }}
-      {% endfor %}
+        {% for message in messages %}
+          {{ message }}
+        {% endfor %}
+      </div>
 
       <div class="d-flex justify-content-between">
         <button name="save" type="submit" class="btn btn-primary mt-3 mb-2" type="submit"><i class="bi bi-save2-fill"></i>Save</button>

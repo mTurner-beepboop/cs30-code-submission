@@ -59,7 +59,7 @@
   <div class="col d-flex justify-content-end mt-3 mb-3">
         <form id="search" method="post" class="d-flex" action="{% url 'webapp:search' %}">
           {% csrf_token %}
-          <input class="form-control" name="search" type="search" id="search" placeholder="e.g. 1111" aria-label="search">
+          <input class="form-control" name="search" type="search" id="search" placeholder="e.g. 1111, Fuels, etc" aria-label="search">
           <button id="dosearch" class="btn btn-success col" type="submit"> Search </button>
         </form>
         <form class="d-flex">

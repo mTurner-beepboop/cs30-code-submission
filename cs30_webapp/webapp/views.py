@@ -9,6 +9,7 @@ from django.template import RequestContext
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib import messages
+from openpyxl import load_workbook
 import requests
 
 
@@ -18,10 +19,27 @@ def home(request):
 def search(request):
     search = request.POST.get('search')
 
+    specific_entry = []
+    try:
+        int(search)
+        specific_entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + search).json()
+        print(type(specific_entry))
+    except ValueError:
+        pass
+
+
     entries = requests.get('http://cs30.herokuapp.com/api/carbon/search/' + search).json()
+    print(type(entries))
+    if specific_entry and entries:
+        all_entries = entries.append(specific_entry)
+    elif specific_entry and not entries:
+        all_entries = [specific_entry]
+    else:
+        all_entries = entries
 
-    for entry in entries:
 
+
+    for entry in all_entries:
         for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
 
             try:
@@ -29,8 +47,8 @@ def search(request):
             except ValueError:
                 pass
 
-    return render(request, 'webapp/search.html', context = {'entries': entries})
-    
+    return render(request, 'webapp/dbview.html', context = {'entries': all_entries, 'from': 'search'})
+
 
 @login_required
 def edit(request, refnum):
@@ -83,7 +101,7 @@ def edit(request, refnum):
 
 
 
-from openpyxl import load_workbook
+
 
 @login_required
 def add(request):
@@ -132,15 +150,16 @@ def add(request):
             upload_form = UploadForm(request.POST)
             if upload_form.is_valid():
                 refnum = request.POST.get('ref_num')
+                print(request.POST.get('Level1'))
                 upload = {
                             'ref_num':int(refnum),
                             'navigation_info':{
                                 'scope':request.POST.get('scope'),
-                                'level1':request.POST.get('Level1'),
-                                'level2':request.POST.get('Level2'),
-                                'level3':request.POST.get('Level3'),
-                                'level4':request.POST.get('Level4'),
-                                'level5':request.POST.get('Level5')
+                                'level1':request.POST.get('level1'),
+                                'level2':request.POST.get('level2'),
+                                'level3':request.POST.get('level3'),
+                                'level4':request.POST.get('level4'),
+                                'level5':request.POST.get('level5')
                                 },
                             'calculation_info':{
                                 'ef':float(request.POST.get('ef')),
@@ -195,7 +214,7 @@ def dbview(request):
             except ValueError:
                 pass
 
-    return render(request, 'webapp/dbview.html', context = {'entries': entries})
+    return render(request, 'webapp/dbview.html', context = {'entries': entries, 'from': 'dbview'})
 
 
 def register(request):

@@ -7,7 +7,12 @@ DBView
 
 {% block navblock %}
 <li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
-<li class="breadcrumb-item active" aria-current="page">DBView</li>
+  {% if from == 'search' %}
+    <li class="breadcrumb-item"><a href="{% url 'webapp:dbview' %}">DBView</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Search</li>
+  {% else %}
+    <li class="breadcrumb-item active" aria-current="page">DBView</li>
+  {% endif %}
 {% endblock %}
 
 
