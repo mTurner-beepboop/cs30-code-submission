@@ -8,4 +8,5 @@ urlpatterns = [
     url(r'^api/carbon/scope$', views.categories),
     url(r'^api/carbon/info$', views.item_calc),
     url(r'^api/home$', views.home, name='home'),
+    url(r'^api/carbon/search/$', views.SearchAPIView.as_view()),
 ]

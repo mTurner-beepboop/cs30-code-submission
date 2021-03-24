@@ -15,6 +15,23 @@ import requests
 def home(request):
     return render(request, 'webapp/home.html')
 
+def search(request):
+    search = request.POST.get('search')
+
+    entries = requests.get('http://cs30.herokuapp.com/api/carbon/search/' + search).json()
+
+    for entry in entries:
+
+        for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
+
+            try:
+                entry['other_info']['last_update'] = datetime.datetime.strptime(str(entry['other_info']['last_update']), format)
+            except ValueError:
+                pass
+
+    return render(request, 'webapp/search.html', context = {'entries': entries})
+    
+
 @login_required
 def edit(request, refnum):
     entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + refnum).json()

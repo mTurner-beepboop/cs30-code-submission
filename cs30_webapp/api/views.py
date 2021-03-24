@@ -2,14 +2,27 @@ from django.shortcuts import render
 from django.http.response import JsonResponse
 from django.http import HttpRequest
 from rest_framework.parsers import JSONParser
-from rest_framework import status
+from rest_framework import status, generics, filters
 from rest_framework.decorators import api_view
 from api.models import FlatfileEntry, NavigationInfo, CalculationInfo, OtherInfo
-from api.serializers import ApiSerializer, NavigationSerializer
+from api.serializers import ApiSerializer, NavigationSerializer, SearchSerializer
 import json
 
 def home(request):
     return render(request, 'api/home.html')
+
+
+class SearchAPIView(generics.ListAPIView):
+    queryset = FlatfileEntry.objects.all()
+    serializer_class = SearchSerializer
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ['ref_num', 'navigation_info__scope','navigation_info__level1', 'navigation_info__level2',
+                        'navigation_info__level3', 'navigation_info__level4', 'navigation_info__level5',
+                        'calculation_info__cu', 'calculation_info__ef', 'other_info__last_update',
+                        'other_info__preference', 'other_info__source'
+                    ]
+
+
 
 @api_view(['GET','POST','DELETE'])
 def entry_list(request):
@@ -31,7 +44,7 @@ def entry_list(request):
         entry_data = request.data
         if 'payload' in entry_data.keys():
             entry_data = json.loads(entry_data['payload'])
-        
+
         #Check if ref num in db, if so, reject, else, serializers
         refNum = entry_data['ref_num']
         print(refNum)
@@ -42,7 +55,7 @@ def entry_list(request):
                 return JsonResponse({}, status=status.HTTP_409_CONFLICT)
         except:
             pass
-            
+
         api_serializer = ApiSerializer(data=entry_data)
         if api_serializer.is_valid():
             api_serializer.save()

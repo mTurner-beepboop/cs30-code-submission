@@ -11,4 +11,5 @@ urlpatterns = [
     path('edit/<refnum>', views.edit, name='edit'),
     path('delete/<refnum>', views.delete, name='delete'),
     path('add/', views.add, name='add'),
+    path('search/', views.search, name='search'),
 ]

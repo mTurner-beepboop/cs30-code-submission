@@ -1,0 +1,84 @@
+{% extends 'webapp/base.html' %}
+{% load static %}
+
+{% block title_block %}
+DBView
+{% endblock %}
+
+{% block navblock %}
+<li class="breadcrumb-item"><a href="{% url 'webapp:home' %}">Home</a></li>
+<li class="breadcrumb-item active" aria-current="page">DBView</li>
+{% endblock %}
+
+
+{% block body_block %}
+<div class="row justify-content-end mb-2 sticky-top">
+  <div class="col-md-auto site-colour-light py-2 px-2 rounded ">
+    <a type="button" class="btn btn-primary" href="{% url 'webapp:add' %}"> Upload </a>
+  </div>
+</div>
+<div style='display: grid; text-align: center; background-color: #E5EEE9'>
+  <table>
+    <tr>
+
+      <th>Reference</th>
+      <th>Scope</th>
+      <th>Level 1</th>
+      <th>Level 2</th>
+      <th>Level 3</th>
+      <th>Level 4</th>
+      <th>Level 5</th>
+      <th>EF</th>
+      <th>CU</th>
+      <th>Last updated</th>
+      <th>Preference</th>
+      <th>Source</th>
+
+    </tr>
+
+    {% for entry in entries %}
+    <tr>
+      <td>{{ entry.ref_num }}</td>
+      <td>{{ entry.navigation_info.scope }}</td>
+      <td>{{ entry.navigation_info.level1 }}</td>
+      <td>{{ entry.navigation_info.level2 }}</td>
+      <td>{{ entry.navigation_info.level3 }}</td>
+      <td>{{ entry.navigation_info.level4 }}</td>
+      <td>{{ entry.navigation_info.level5 }}</td>
+      <td>{{ entry.calculation_info.ef }}</td>
+      <td>{{ entry.calculation_info.cu }}</td>
+      <td>{{ entry.other_info.last_update|date:"d/m/Y - g:i:s" }}</td>
+      <td>{{ entry.other_info.preference }}</td>
+      <td>{{ entry.other_info.source }}</td>
+      <td><a type="button" class="btn btn-warning btn-sm" href="{% url 'webapp:edit' entry.ref_num  %}"> Edit </a></td>
+      <td>
+          <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#id{{ entry.ref_num  }}">
+            Del
+          </button>
+          <!-- Modal for delete button to reduce/prevent accidental deletions.-->
+          <div class="modal fade" id="id{{ entry.ref_num  }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="staticBackdropLabel">Are you sure?</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  Deleting this entry, {{ entry.ref_num }}, will remove it permanently.
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-success" data-bs-dismiss="modal">No thanks.</button>
+                  <form id="delete" method="post" action="{% url 'webapp:delete' entry.ref_num %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Yes, I'm sure!</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endblock %}
