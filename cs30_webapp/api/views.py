@@ -12,22 +12,11 @@ import json
 def home(request):
     return render(request, 'api/home.html')
 
-
-class SearchAPIView(generics.ListAPIView):
-    queryset = FlatfileEntry.objects.all()
-    serializer_class = SearchSerializer
-    filter_backends = (filters.SearchFilter,)
-    search_fields = ['ref_num', 'navigation_info__scope','navigation_info__level1', 'navigation_info__level2',
-                        'navigation_info__level3', 'navigation_info__level4', 'navigation_info__level5',
-                        'calculation_info__cu', 'calculation_info__ef', 'other_info__last_update',
-                        'other_info__preference', 'other_info__source'
-                    ]
-
 @api_view(['GET'])
 def search(request, query):
     if request.method == 'GET':
         queryString = query
-        try:   
+        try:
             #Int has been passed, check ref_num - NOTE: some issue with search, so an integer search does not function currently
             queryInt = int(queryString)
             entries = FlatfileEntry.objects.filter(Q(ref_num__icontains=queryInt))
