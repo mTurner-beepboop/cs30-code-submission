@@ -238,7 +238,7 @@ def delete(request, refnum):
 
 @login_required
 def dbview(request):
-    # The url here will need to be made more general so it doesn't need to be changed based on host, I don't remember how to do that though
+    # The url here will is specific to the deployment location used in development, and should be changed if the app is to be deployed elsewhere.
     entries = requests.get('http://cs30.herokuapp.com/api/carbon').json()
 
     # Checks the given date against the three possible formats they can take and then formats them.
