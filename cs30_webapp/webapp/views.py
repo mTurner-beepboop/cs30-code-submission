@@ -23,13 +23,11 @@ def search(request):
     try:
         int(search)
         specific_entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + search).json()
-        print(type(specific_entry))
     except ValueError:
         pass
 
 
     entries = requests.get('http://cs30.herokuapp.com/api/carbon/search/' + search).json()
-    print(type(entries))
     if specific_entry and entries:
         all_entries = entries.append(specific_entry)
     elif specific_entry and not entries:
@@ -85,12 +83,15 @@ def edit(request, refnum):
                             }
                     }
 
-                    #onClick="window.location.reload()"
+
             try_edit = requests.put('http://cs30.herokuapp.com/api/carbon/' + refnum, json=edit)
-
-            messages.success(request, 'Edit successful!')
-            return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
-
+            
+            if try_edit.status_code == 200:
+                messages.success(request, 'Edit successful!')
+                return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
+            else:
+                messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
+                return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
         else:
             messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
             return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
@@ -150,7 +151,6 @@ def add(request):
             upload_form = UploadForm(request.POST)
             if upload_form.is_valid():
                 refnum = request.POST.get('ref_num')
-                print(request.POST.get('Level1'))
                 upload = {
                             'ref_num':int(refnum),
                             'navigation_info':{
