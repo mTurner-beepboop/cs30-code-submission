@@ -25,3 +25,7 @@ Once you are signed into a valid account, you can access a view of the full data
 entry of file, and a search to find specific entries by their ID or a group of entries by a keyword.
 
 An example database file has been provided in the top directory of this project called TESTFILE.xlsx, displaying the format any uploaded file should follow, as well as being detailed in the pop-up on the upload page.
+
+If a search results in a 'Search contained illegal characters, please try another.' message but should have returned a valid list of entries, the search may have been out bounds of the regex in api/urls.py due to updates in the way the database was formatted, or use of special characters to denote some new information. This can be fixed simply by updating the regex and redeploying the api.
+
+The URL used in views.py, 'http://cs30.herokuapp.com/api/carbon', is specific to the delploy location used for development and final delivery. Should you wish to deploy it elsewhere this will need to be changed.

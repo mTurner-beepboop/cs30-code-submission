@@ -36,7 +36,11 @@ def search(request):
     except ValueError:
         pass
 
-    entries = requests.get('http://cs30.herokuapp.com/api/carbon/search/' + search).json()
+    try:
+        entries = requests.get('http://cs30.herokuapp.com/api/carbon/search/' + search).json()
+    except JSONDecodeError:
+        messages.error(request, 'Search contained illegal characters, please try another.')
+        return redirect(reverse('webapp:home'))
 
     # Performs the merging of possible entries, depending on which actually contain values.
     if specific_entry and entries:
