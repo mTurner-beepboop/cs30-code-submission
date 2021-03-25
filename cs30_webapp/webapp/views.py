@@ -11,14 +11,21 @@ from django.urls import reverse
 from django.contrib import messages
 from openpyxl import load_workbook
 import requests
+import datetime
 
 
 def home(request):
     return render(request, 'webapp/home.html')
 
+
 def search(request):
     search = request.POST.get('search')
 
+    '''
+    As django_rest_framework cannot search IntegerFields as it can CharFields, this checks if the searched term
+    is an integer and preforms a specific lookup for an entry with that ref_num to be appended to the list
+    of results.
+    '''
     specific_entry = []
     try:
         int(search)
@@ -26,8 +33,9 @@ def search(request):
     except ValueError:
         pass
 
-
     entries = requests.get('http://cs30.herokuapp.com/api/carbon/search/' + search).json()
+
+    # Performs the merging of possible entries, depending on which actually contain values.
     if specific_entry and entries:
         all_entries = entries.append(specific_entry)
     elif specific_entry and not entries:
@@ -35,11 +43,9 @@ def search(request):
     else:
         all_entries = entries
 
-
-
+    # Checks the given date against the three possible formats they can take and then formats them.
     for entry in all_entries:
         for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
-
             try:
                 entry['other_info']['last_update'] = datetime.datetime.strptime(str(entry['other_info']['last_update']), format)
             except ValueError:
@@ -48,9 +54,14 @@ def search(request):
     return render(request, 'webapp/dbview.html', context = {'entries': all_entries, 'from': 'search'})
 
 
+
+
+
 @login_required
 def edit(request, refnum):
     entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + refnum).json()
+
+    # Checks the given date against the three possible formats they can take and then formats them.
     for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
         try:
             entry['other_info']['last_update'] = datetime.datetime.strptime(str(entry['other_info']['last_update']), format)
@@ -59,8 +70,10 @@ def edit(request, refnum):
 
     if request.method == 'POST':
         edit_form = EditForm(request.POST)
+
         if edit_form.is_valid():
 
+            # Formats ther user given data into the correct format to be sent to the api.
             edit = {
                         'ref_num':refnum,
                         # While levels cannot be edited currently, I'm leaving this in as an example.
@@ -84,17 +97,21 @@ def edit(request, refnum):
                     }
 
 
+            # Attempts to send the data the api with a put request.
             try_edit = requests.put('http://cs30.herokuapp.com/api/carbon/' + refnum, json=edit)
-            
+
+            # Displays an error or success message depending on the status returned from the api.
             if try_edit.status_code == 200:
                 messages.success(request, 'Edit successful!')
                 return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
             else:
                 messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
                 return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
+
         else:
             messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
             return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
+
     else:
         edit_form = EditForm()
 
@@ -106,15 +123,17 @@ def edit(request, refnum):
 
 @login_required
 def add(request):
-
     if request.method == 'POST':
 
+        # If the user has attempted to upload a file.
         if 'upload' in request.POST:
             upload_form = UploadForm()
-            test = str(request.FILES['uploadfile'])
+
+            # Loads the .xlsx file supplied by the user
             wb = load_workbook(request.FILES['uploadfile'])
             ws = wb.active
 
+            # Navigates through the .xlsx taking the values from each row and formatting them as required.
             for idx, row in enumerate(ws.iter_rows()):
                 if idx == 0 or idx == 1:
                     continue
@@ -142,15 +161,20 @@ def add(request):
                                         'source':ws.cell(row = idx+1, column = 8).value
                                         }
                                 }
+
                         try_upload = requests.post('https://cs30.herokuapp.com/api/carbon', json=edit)
 
             messages.success(request, 'Upload successful!')
             return render(request, 'webapp/add.html', context={'upload_form': upload_form})
 
+        # If the user has attempted to add a single entry
         elif 'save' in request.POST:
             upload_form = UploadForm(request.POST)
+
             if upload_form.is_valid():
                 refnum = request.POST.get('ref_num')
+
+                # Formats ther user given data into the correct format to be sent to the api.
                 upload = {
                             'ref_num':int(refnum),
                             'navigation_info':{
@@ -172,6 +196,7 @@ def add(request):
                                 }
                         }
 
+                # Sets any values left blank by the user as None for the api.
                 for key, value in upload['navigation_info'].items():
                     if value == '':
                         upload['navigation_info'][key] = None
@@ -190,6 +215,9 @@ def add(request):
     return render(request, 'webapp/add.html', context={'upload_form': upload_form})
 
 
+
+
+
 @login_required
 def delete(request, refnum):
     if request.method == 'POST':
@@ -198,17 +226,17 @@ def delete(request, refnum):
     return render(request, 'webapp/dbview.html', context = {'entries': entries})
 
 
-import datetime
-# This view serves 3 pages, view, edit and upload, these might need to be separate. edit will require a push request, upload will probably need to use the population script (are we completely deleting data in the database or updating?)
+
+
+
 @login_required
 def dbview(request):
     # The url here will need to be made more general so it doesn't need to be changed based on host, I don't remember how to do that though
     entries = requests.get('http://cs30.herokuapp.com/api/carbon').json()
 
+    # Checks the given date against the three possible formats they can take and then formats them.
     for entry in entries:
-
         for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
-
             try:
                 entry['other_info']['last_update'] = datetime.datetime.strptime(str(entry['other_info']['last_update']), format)
             except ValueError:
@@ -217,44 +245,35 @@ def dbview(request):
     return render(request, 'webapp/dbview.html', context = {'entries': entries, 'from': 'dbview'})
 
 
+
+
+
 def register(request):
     context = RequestContext(request)
 
-    # If it's a HTTP POST, we're interested in processing form data.
     if request.method == 'POST':
-        # Attempt to grab information from the raw form information.
-        # Note that we make use of both UserForm and UserProfileForm.
         user_form = UserForm(request.POST)
 
-        # If the two forms are valid...
         if user_form.is_valid():
-            # Save the user's form data to the database.
             user = user_form.save()
 
-            # Now we hash the password with the set_password method.
-            # Once hashed, we can update the user object.
             user.set_password(user.password)
             user.save()
 
             messages.success(request, 'Thank you for registering! Please wait for a staff member to activate your account.')
             return render(request, 'webapp/home.html')
         else:
-            # Invalid form or forms - mistakes or something else?
-            # Print problems to the terminal.
             print(user_form.errors)
+
     else:
-        # Not a HTTP POST, so we render our form using two ModelForm instances.
-        # These forms will be blank, ready for user input.
         user_form = UserForm()
 
-    # Render the template depending on the context.
     return render(request, 'webapp/register.html', context={'user_form': user_form})
 
 
 def user_login(request):
     context = RequestContext(request)
 
-    # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -262,10 +281,8 @@ def user_login(request):
         user = authenticate(username=username, password=password)
 
         if user:
-            # Is the account active? It could have been disabled.
+            # Ensures the account has been activated by staff before user is allowed to login.
             if user.is_staff:
-                # If the account is valid and active, we can log the user in.
-                # We'll send the user back to the homepage.
                 login(request, user)
                 return redirect(reverse('webapp:home'))
             else:
@@ -274,17 +291,12 @@ def user_login(request):
                 return render(request, 'webapp/login.html')
         else:
             # Bad login details were provided. So we can't log the user in.
-            # This print displays their username and password on the console, enable for debug only.
-            #print(f"Invalid login details: {username}, {password}")
 
             messages.error(request, 'Username or password was incorrect, please try again.')
             return render(request, 'webapp/login.html')
 
-    # The request is not a HTTP POST, so display the login form.
-    # This scenario would most likely be a HTTP GET.
     else:
-        # No context variables to pass to the template system, hence the
-        # blank dictionary object...
+
         return render(request, 'webapp/login.html')
 
 
@@ -292,5 +304,4 @@ def user_login(request):
 def user_logout(request):
     # Since we know the user is logged in, we can now just log them out.
     logout(request)
-    # Take the user back to the homepage.
     return HttpResponseRedirect("/webapp/")

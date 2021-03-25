@@ -20,7 +20,6 @@ class UserForm(forms.ModelForm):
         fields = ('username', 'email', 'password',)
 
 
-#Examin if the constraints here are correct, and ensure they are also correct in edit.html
 class EditForm(forms.Form):
     scope = forms.ChoiceField(choices = SCOPE_CHOICES)
     level1 = forms.CharField(max_length = 30, min_length = 1, required=False)
