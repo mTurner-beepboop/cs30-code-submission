@@ -21,7 +21,7 @@ def home(request):
 def search(request):
     search = request.POST.get('search').strip()
     search = urllib.parse.quote(search)
-    print('http://cs30.herokuapp.com/api/carbon/search/' + search)
+    print('https://cs30.herokuapp.com/api/carbon/search/' + search)
 
 
     '''
@@ -32,12 +32,12 @@ def search(request):
     specific_entry = []
     try:
         int(search)
-        specific_entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + search).json()
+        specific_entry = requests.get('https://cs30.herokuapp.com/api/carbon/' + search).json()
     except ValueError:
         pass
 
     try:
-        entries = requests.get('http://cs30.herokuapp.com/api/carbon/search/' + search).json()
+        entries = requests.get('https://cs30.herokuapp.com/api/carbon/search/' + search).json()
     except JSONDecodeError:
         messages.error(request, 'Search contained illegal characters, please try another.')
         return redirect(reverse('webapp:home'))
@@ -66,8 +66,8 @@ def search(request):
 
 @login_required
 def edit(request, refnum):
-    entry = requests.get('http://cs30.herokuapp.com/api/carbon/' + refnum).json()
-
+    entry = requests.get('https://cs30.herokuapp.com/api/carbon/' + refnum).json()
+    datetime_entry = entry['other_info']['last_update']
     # Checks the given date against the three possible formats they can take and then formats them.
     for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
         try:
@@ -81,41 +81,46 @@ def edit(request, refnum):
         if edit_form.is_valid():
 
             # Formats ther user given data into the correct format to be sent to the api.
+
             edit = {
-                        'ref_num':refnum,
-                        # While levels cannot be edited currently, I'm leaving this in as an example.
+                        'ref_num':int(refnum),
+                        # As levels cannot be edited they don't need to get from the form.
                         'navigation_info':{
                             'scope':request.POST.get('scope'),
-                            'level1':request.POST.get('level1'),
-                            'level2':request.POST.get('level2'),
-                            'level3':request.POST.get('level3'),
-                            'level4':request.POST.get('level4'),
-                            'level5':request.POST.get('level5')
+                            'level1':entry['navigation_info']['level1'],
+                            'level2':entry['navigation_info']['level2'],
+                            'level3':entry['navigation_info']['level3'],
+                            'level4':entry['navigation_info']['level4'],
+                            'level5':entry['navigation_info']['level5']
                             },
                         'calculation_info':{
                             'ef':float(request.POST.get('ef')),
                             'cu':request.POST.get('cu')
                             },
                         'other_info':{
-                            'last_update':(datetime.datetime.now(tz=None)).__str__(),
+                            # last_update is updated in the API, so no need to do anything to it here.
+                            'last_update':datetime_entry,
                             'preference':int(request.POST.get('preference')),
                             'source':request.POST.get('source')
                             }
                     }
 
 
+            print(edit)
             # Attempts to send the data the api with a put request.
-            try_edit = requests.put('http://cs30.herokuapp.com/api/carbon/' + refnum, json=edit)
+            try_edit = requests.put('https://cs30.herokuapp.com/api/carbon/' + refnum, json=edit)
 
             # Displays an error or success message depending on the status returned from the api.
             if try_edit.status_code == 200:
                 messages.success(request, 'Edit successful!')
                 return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
             else:
+                print(try_edit.status_code)
                 messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
                 return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
 
         else:
+            print("!!!")
             messages.error(request, 'Edit unsuccessful, please check edits are valid and try again.')
             return redirect(reverse('webapp:edit', kwargs={'refnum':refnum}))
 
@@ -228,7 +233,7 @@ def add(request):
 @login_required
 def delete(request, refnum):
     if request.method == 'POST':
-        requests.delete('http://cs30.herokuapp.com/api/carbon/' + refnum)
+        requests.delete('https://cs30.herokuapp.com/api/carbon/' + refnum)
         return redirect(reverse('webapp:dbview'))
     return render(request, 'webapp/dbview.html', context = {'entries': entries})
 
@@ -239,7 +244,7 @@ def delete(request, refnum):
 @login_required
 def dbview(request):
     # The url here will is specific to the deployment location used in development, and should be changed if the app is to be deployed elsewhere.
-    entries = requests.get('http://cs30.herokuapp.com/api/carbon').json()
+    entries = requests.get('https://cs30.herokuapp.com/api/carbon').json()
 
     # Checks the given date against the three possible formats they can take and then formats them.
     for entry in entries:

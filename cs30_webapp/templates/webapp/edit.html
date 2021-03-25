@@ -50,14 +50,14 @@ EditDB - {{ entry.ref_num  }}
       </tr>
 
       <tr>
-        <td><input type="number" id="ref_num" name="ref_num" class="form-control" maxlength="5" size="4" min="1" max="99999" value={{ entry.ref_num }} disabled></td>
+        <td><input type="number" id="ref_num" name="ref_num" class="form-control" maxlength="5" size="4" min="1" max="99999" value="{{ entry.ref_num }}" disabled></td>
         <td>
           <select id="scope" name="scope" class="form-control" selected="{{ entry.navigation_info.scope }}">
             <option {% if entry.navigation_info.scope  == "Scope 1" %} selected {% endif %} value="Scope 1">Scope 1</option>
             <option {% if entry.navigation_info.scope  == "Scope 2" %} selected {% endif %} value="Scope 2">Scope 2</option>
             <option {% if entry.navigation_info.scope  == "Scope 3" %} selected {% endif %} value="Scope 3">Scope 3</option>
             <option {% if entry.navigation_info.scope  == "Outside of Scopes" %} selected {% endif %} value="Outside of Scopes">Outside of Scopes</option>
-          </select
+          </select>
         </td>
         <td><input type="text" id="level1" name="level1" class="form-control" maxlength="30" size="10" value="{{ entry.navigation_info.level1 }}" disabled></td>
         <td><input type="text" id="level2" name="level2" maxlength="30" class="form-control" size="10" value="{{ entry.navigation_info.level2 }}" disabled></td>
