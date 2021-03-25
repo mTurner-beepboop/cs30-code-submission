@@ -12,18 +12,17 @@ from django.contrib import messages
 from openpyxl import load_workbook
 import requests
 import datetime
-
+import urllib
 
 def home(request):
     return render(request, 'webapp/home.html')
 
-import urllib
+
 def search(request):
     search = request.POST.get('search').strip()
     search = urllib.parse.quote(search)
     print('http://cs30.herokuapp.com/api/carbon/search/' + search)
-    #search = search.replace(' ', '%20')
-    # print(search)
+
 
     '''
     As django_rest_framework cannot search IntegerFields as it can CharFields, this checks if the searched term
@@ -51,7 +50,6 @@ def search(request):
     for entry in all_entries:
         for format in('%Y-%m-%dT%H:%M:%SZ', '%Y-%m-%dT%H:%M:%S.%fZ', '%Y-%m-%d %H:%M:%S'):
             try:
-                print(entry['other_info']['last_update'])
                 entry['other_info']['last_update'] = datetime.datetime.strptime(str(entry['other_info']['last_update']), format)
             except ValueError:
                 pass
