@@ -222,7 +222,7 @@ def add(request):
 def delete(request, refnum):
     if request.method == 'POST':
         requests.delete('http://cs30.herokuapp.com/api/carbon/' + refnum)
-        return redirect(reverse('webapp:dbview'))
+        return redirect(reverse('webapp:home'))
     return render(request, 'webapp/dbview.html', context = {'entries': entries})
 
 
