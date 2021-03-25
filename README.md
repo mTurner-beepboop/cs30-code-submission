@@ -17,6 +17,10 @@ python manage.py runserver (this will begin running the django development serve
 
 Next, navigate to http://127.0.0.1:8000. You will be greeted with the Webapp's homepage.
 
+
+
+
+
 Normal Use:
 
 You will only be able to make use of the Webapp if you are logged into an
@@ -42,14 +46,18 @@ an upload page to add a new entry of file, and a search to find specific entries
 
 An example database file has been provided in the top directory of this project called TESTFILE.xlsx, displaying the format any uploaded file should follow, as well as being detailed in the pop-up on the upload page.
 
+
+
+
 Further Development:
 
 If a search results in a 'Search contained illegal characters, please try another.' message but should have returned a valid list of entries, the search may have been out bounds of the regex in api/urls.py due to updates in the way the database was formatted, or use of special characters to denote some new information. This can be fixed simply by updating the regex and redeploying the API.
 
+
 The URL used in views.py, 'http://cs30.herokuapp.com/API/carbon', is specific to the deploy location used for development and final delivery. Should you wish to deploy it elsewhere this will need to be changed.
 
-Running the Webapp locally will require some changes to settings.py.
 
+Running the Webapp locally will require some changes to settings.py.
 DEBUG = False
 ALLOWED_HOSTS = ['.herokuapp.com']
 
@@ -58,12 +66,11 @@ The above lines should be changed as below to allow local development:
 DEBUG = True
 ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1']
 
-They should however be kept as initially show for deployment, substituting '.herokuapp.com'
+They should however be kept as initially shown for deployment, substituting '.herokuapp.com'
 with the host-name of the location the Webapp is being deployed.
 
 
-
-The section of code below, located in settign.py, may need to be commented out for local development depending on browser.
+The section of code below, located in settings.py, may need to be commented out for local development depending on browser.
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
