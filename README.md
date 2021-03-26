@@ -48,7 +48,6 @@ An example database file has been provided in the top directory of this project 
 
 
 
-
 Further Development:
 
 If a search results in a 'Search contained illegal characters, please try another.' message but should have returned a valid list of entries, the search may have been out bounds of the regex in api/urls.py due to updates in the way the database was formatted, or use of special characters to denote some new information. This can be fixed simply by updating the regex and redeploying the API.
@@ -69,6 +68,7 @@ ALLOWED_HOSTS = ['.herokuapp.com', '127.0.0.1']
 They should however be kept as initially shown for deployment, substituting '.herokuapp.com'
 with the host-name of the location the Webapp is being deployed.
 
+Currently, the data is stored on a mongodb ATLAS server, this was mainly for development purposes, to change the database used by the webapp, the code can be found in settings.py for the main project, with the main admin account for the server logged there too
 
 The section of code below, located in settings.py, may need to be commented out for local development depending on browser.
 
