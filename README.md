@@ -78,3 +78,5 @@ CSRF_COOKIE_SECURE = True
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 As before, ensure this change is reverted for deployment.
+
+Note: In parts of the API, there are security vulnearbilities that we did not have the time to address, these are outlined further in the api readme.md
