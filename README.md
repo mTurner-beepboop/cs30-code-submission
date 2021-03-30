@@ -1,6 +1,10 @@
 # Main README
 NOTE: For information regarding the API, please check the readme located in cs30_Webapp/API/
 
+Heroku:
+
+The webapp should be deployed to https://cs30.herokuapp.com with dummy data so you can see how it works.
+
 Running locally:
 
 To install and run this Webapp, you must install pipenv on your machine to deal with dependencies, as well as python 3.9.
