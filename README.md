@@ -1,11 +1,11 @@
 # Main README
 NOTE: For information regarding the API, please check the readme located in cs30_Webapp/API/
 
-#Heroku:
+Heroku:
 
 The webapp should be deployed to https://cs30.herokuapp.com with dummy data so you can see how it works.
 
-#Running locally:
+Running locally:
 
 To install and run this Webapp, you must install pipenv on your machine to deal with dependencies, as well as python 3.9.
 To do this from the command line run pip install pipenv
@@ -23,7 +23,7 @@ Next, navigate to http://127.0.0.1:8000. You will be greeted with the Webapp's h
 
 
 
-#Normal Use:
+Normal Use:
 
 You will only be able to make use of the Webapp if you are logged into an
 account that has been marked as staff by an admin. A default admin account has been supplied:
@@ -50,7 +50,7 @@ An example database file has been provided in the top directory of this project 
 
 
 
-#Further Development:
+Further Development:
 
 If a search results in a 'Search contained illegal characters, please try another.' message but should have returned a valid list of entries, the search may have been out bounds of the regex in api/urls.py due to updates in the way the database was formatted, or use of special characters to denote some new information. This can be fixed simply by updating the regex and redeploying the API.
 
